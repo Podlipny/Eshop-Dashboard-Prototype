@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Eshop.Dashboard.Data;
+using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace Eshop.Dashboard.API
       var connectionString = Configuration["connectionStrings:eshopDasboardDBConnectionString"];
       services.AddDbContext<EshopDbContext>(o => o.UseSqlServer(connectionString));
 
+      services.AddScoped<IUsersRepository, UsersRepository>();
+
       services.AddMemoryCache();
 
     }
@@ -40,12 +43,11 @@ namespace Eshop.Dashboard.API
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
+        dbContext.EnsureSeedDataForContext();
       }
 
       app.UseDefaultFiles();
       app.UseStaticFiles();
-
-      dbContext.EnsureSeedDataForContext();
 
       app.UseMvc();
     }

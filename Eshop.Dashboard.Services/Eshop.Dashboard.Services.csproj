@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Eshop.Dashboard.Data\Eshop.Dashboard.Data.csproj" />
+    <ProjectReference Include="..\Eshop.Dashboard.Data\Eshop.Dashboard.Data.csproj" />
   </ItemGroup>
 
 </Project>
