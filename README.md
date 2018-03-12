@@ -1,6 +1,6 @@
 # EshopDashboard
 
-TODO: add some readme info and link to ###DEMO
+TODO: add some readme info and link to ### DEMO
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.8.
 

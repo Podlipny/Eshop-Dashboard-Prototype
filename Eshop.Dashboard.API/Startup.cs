@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace eshopDashboardProt
+namespace Eshop.Dashboard.API
 {
   public class Startup
   {
@@ -24,7 +24,9 @@ namespace eshopDashboardProt
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
+
       services.AddMemoryCache();
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
