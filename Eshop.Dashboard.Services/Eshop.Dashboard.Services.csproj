@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Eshop.Dashboard.Data\Eshop.Dashboard.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
