@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Eshop.Dashboard.Data.Entities
 {
@@ -15,15 +13,16 @@ namespace Eshop.Dashboard.Data.Entities
     public string Username { get; set; }
 
     [Required]
-    [MaxLength(255)]
+    [MaxLength(512)]
     public string Password { get; set; }
 
     [Required]
     [MaxLength(50)]
-    public string FirstName { get; set; }
+    public string Firstname { get; set; }
 
     [Required]
     [MaxLength(100)]
-    public string LastName { get; set; }
+    public string Lastname { get; set; }
+
   }
 }

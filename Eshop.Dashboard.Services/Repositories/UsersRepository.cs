@@ -4,14 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace Eshop.Dashboard.Services.Repositories
 {
   public class UsersRepository : BaseRepository, IUsersRepository
   {
-    public UsersRepository(EshopDbContext context)
+    private IConfiguration _configuration;
+
+    public UsersRepository(EshopDbContext context, IConfiguration configuration)
       : base(context)
     {
+      _configuration = configuration;
     }
 
     public User GetUser(Guid userId)
@@ -24,9 +28,10 @@ namespace Eshop.Dashboard.Services.Repositories
       return _context.Users.FirstOrDefault(a => a.Username == username);
     }
 
-    public IEnumerable<User> GetUsers(IEnumerable<Guid> usersIds)
+    public IEnumerable<User> GetUsers()
     {
-      throw new NotImplementedException();
+      //TODO: add parametre search
+      return _context.Users.ToList();
     }
 
     public bool UserExists(Guid userId)
@@ -37,17 +42,14 @@ namespace Eshop.Dashboard.Services.Repositories
     public void CreateUser(User user)
     {
       user.Id = Guid.NewGuid();
+      user.Password = PasswordHasher.CreateHash(user.Password, _configuration["Auth:Salt"]);
+
       _context.Users.Add(user);
     }
 
     public void DeleteUser(User user)
     {
-      throw new NotImplementedException();
-    }
-
-    public bool Save()
-    {
-      return (_context.SaveChanges() >= 0);
+      _context.Users.Remove(user);
     }
 
     public void UpdateAuthor(User user)

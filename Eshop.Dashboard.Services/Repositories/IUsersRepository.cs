@@ -11,7 +11,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     User FindByName(string username);
 
-    IEnumerable<User> GetUsers(IEnumerable<Guid> usersIds);
+    IEnumerable<User> GetUsers();
 
     bool UserExists(Guid userId);
 
