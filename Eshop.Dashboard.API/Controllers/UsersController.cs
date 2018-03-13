@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Eshop.Dashboard.API.ViewModels;
+using AutoMapper;
+using Eshop.Dashboard.API.ViewModels.Users;
+using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +34,23 @@ namespace Eshop.Dashboard.API.Controllers
     public IEnumerable<string> Get()
     {
       return new string[] { "Auth controller " };
+    }
+
+    [HttpPost]
+    public IActionResult Register([FromBody] RegisterViewModel model)
+    {
+      if (ModelState.IsValid)
+      {
+        var user = _userRepository.FindByName(model.Username);
+        if (user != null)
+        {
+          return StatusCode((int)HttpStatusCode.Conflict, $"Username: {model.Username} already exist in database!");
+        }
+
+        user = Mapper.Map<User>(model);
+        _userRepository.CreateUser(user);
+      }
+      return BadRequest();
     }
 
     [HttpPost]
