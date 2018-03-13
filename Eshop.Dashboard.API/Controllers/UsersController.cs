@@ -1,103 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Eshop.Dashboard.API.Helpers;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Eshop.Dashboard.API.Controllers
 {
   [Route("api/[controller]")]
   public class UsersController : Controller
   {
-    public IConfiguration _configuration { get; }
-    public IUsersRepository _userRepository { get; }
+    private IUsersRepository _userRepository { get; }
 
-
-    public UsersController(IConfiguration configuration, IUsersRepository userRepository)
+    public UsersController(IUsersRepository userRepository)
     {
-      _configuration = configuration;
       _userRepository = userRepository;
     }
-    // GET api/Auth
-    [HttpGet]
-    public IEnumerable<string> Get()
+
+    [Authorize]
+    [HttpGet(Name = "GetUsers")]
+    public IActionResult Get()
     {
-      return new string[] { "Auth controller " };
+      var usersEntities = _userRepository.GetUsers();
+      var usersToReturn = Mapper.Map<IEnumerable<UserDtoViewModel>>(usersEntities);
+      
+      return Ok(usersToReturn);
     }
 
-    [HttpPost]
+    [Authorize]
+    [HttpGet("{id}", Name = "GetUser")]
+    public IActionResult Get(Guid id)
+    {
+      var userEntity = _userRepository.GetUser(id);
+      if (userEntity == null)
+      {
+        return NotFound($"User with id: {id} does not exist!");
+      }
+
+      var userToReturn = Mapper.Map<UserDtoViewModel>(userEntity);
+
+      return Ok(userToReturn);
+    }
+
+    [HttpPost(Name = "Register")]
     public IActionResult Register([FromBody] RegisterViewModel model)
     {
+      if (model == null)
+        return BadRequest();
+
       if (ModelState.IsValid)
       {
-        var user = _userRepository.FindByName(model.Username);
-        if (user != null)
+        var userEntity = _userRepository.FindByName(model.Username);
+        if (userEntity != null)
         {
           return StatusCode((int)HttpStatusCode.Conflict, $"Username: {model.Username} already exist in database!");
         }
 
-        user = Mapper.Map<User>(model);
-        _userRepository.CreateUser(user);
-      }
-      return BadRequest();
-    }
+        userEntity = Mapper.Map<User>(model);
+        _userRepository.CreateUser(userEntity);
 
-    [HttpPost]
-    public IActionResult CreateToken([FromBody] LoginViewModel model)
-    {
-      if (ModelState.IsValid)
-      {
-        var user = _userRepository.FindByName(model.Username);
-
-        if (user != null)
+        if (!_userRepository.Save())
         {
-          //TODO: change to clasick satl verification 
-
-          //var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-
-        //  if (result.Succeeded)
-        //  {
-        //    // Create the token
-        //    //var claims = new[]
-        //    //{
-        //    //  new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-        //    //  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //    //  new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-        //    //};
-
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        //    var token = new JwtSecurityToken(
-        //      _configuration["Tokens:Issuer"],
-        //      _configuration["Tokens:Audience"],
-        //      claims,
-        //      expires: DateTime.Now.AddMinutes(30),
-        //      signingCredentials: creds);
-
-        //    var results = new
-        //    {
-        //      token = new JwtSecurityTokenHandler().WriteToken(token),
-        //      expiration = token.ValidTo
-        //    };
-
-        //    return Created("", results);
-        //  }
+          throw new Exception("Creating an user failed on save.");
         }
+
+        var userToReturn = Mapper.Map<UserDtoViewModel>(userEntity);
+
+        return CreatedAtRoute("GetUser", new { id = userToReturn.Id }, userToReturn);
+
       }
 
-      return BadRequest();
+      // return 422 - !ModelState.IsValid
+      return new UnprocessableModelStateObjectResult(ModelState);
     }
+
+    [Authorize]
+    [HttpDelete("{id}", Name = "DeleteUser")]
+    public IActionResult Delete(Guid id)
+    {
+      var userEntity = _userRepository.GetUser(id);
+      if (userEntity == null)
+      {
+        return NotFound();
+      }
+
+      _userRepository.DeleteUser(userEntity);
+      if (!_userRepository.Save())
+      {
+        throw new Exception($"Deleting user {id} failed on save.");
+      }
+
+      return NoContent();
+    }
+
   }
 }
