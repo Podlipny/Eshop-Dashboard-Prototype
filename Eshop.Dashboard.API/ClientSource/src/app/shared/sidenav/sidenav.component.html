@@ -1,0 +1,17 @@
+<mat-sidenav-container class="app-sidenav-container" >
+  <!-- mat-elevation-z10" - vraci stin pokud je side bar deaultne otevren -->
+  <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" 
+                opened="true" 
+                mode="side">
+    <mat-toolbar color="primary">
+    Eshop Dashboard
+    </mat-toolbar>
+
+  </mat-sidenav>
+
+  <div class="app-sidenav-content">
+    <div class="wrapper">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</mat-sidenav-container>

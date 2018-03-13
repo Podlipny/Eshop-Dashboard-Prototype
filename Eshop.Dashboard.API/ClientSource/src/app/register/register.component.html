@@ -1,0 +1,44 @@
+<mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>EShop Dashboard</h1></mat-card-title>
+      <mat-card-subtitle>
+        <h3>Register new user account</h3>
+      </mat-card-subtitle>
+    </mat-card-header>
+  
+    <mat-card-content>
+      <form class="example-container">
+        <mat-form-field>
+          <input matInput placeholder="Username" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Firstname" required>
+        </mat-form-field>
+      
+        <mat-form-field>
+          <input matInput placeholder="Lastname" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password again" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Telephone">
+        </mat-form-field>
+        
+        <mat-checkbox>Accept terms and conditions</mat-checkbox>
+      </form>
+    </mat-card-content>
+  
+    <mat-card-actions align="middle">
+      <button mat-button color="primary" color="primary" routerLink="/">Cancel</button>
+      <button mat-raised-button color="primary">Register</button>
+    </mat-card-actions>
+  </mat-card>
