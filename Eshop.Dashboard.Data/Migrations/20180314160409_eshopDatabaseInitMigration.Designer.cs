@@ -11,8 +11,8 @@ using System;
 namespace Eshop.Dashboard.Data.Migrations
 {
     [DbContext(typeof(EshopDbContext))]
-    [Migration("20180313164014_ProductCategoryAdded")]
-    partial class ProductCategoryAdded
+    [Migration("20180314160409_eshopDatabaseInitMigration")]
+    partial class eshopDatabaseInitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,13 +30,9 @@ namespace Eshop.Dashboard.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<Guid?>("ParentCategoryId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentCategoryId");
-
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Product", b =>
@@ -54,13 +50,13 @@ namespace Eshop.Dashboard.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<decimal>("Price");
+                    b.Property<double>("Price");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Eshop.Dashboard.Data.Entities.ProductProperty", b =>
@@ -82,7 +78,7 @@ namespace Eshop.Dashboard.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductProperties");
+                    b.ToTable("ProductProperty");
                 });
 
             modelBuilder.Entity("Eshop.Dashboard.Data.Entities.User", b =>
@@ -109,13 +105,6 @@ namespace Eshop.Dashboard.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Category", b =>
-                {
-                    b.HasOne("Eshop.Dashboard.Data.Entities.Category", "ParentCategory")
-                        .WithMany("ParentNextCategorys")
-                        .HasForeignKey("ParentCategoryId");
                 });
 
             modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Product", b =>

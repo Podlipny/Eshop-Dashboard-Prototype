@@ -15,9 +15,9 @@ namespace Eshop.Dashboard.Data.Entities
     [MaxLength(255)]
     public string Name { get; set; }
 
-    [ForeignKey("ParentCategoryId")]
-    public Category ParentCategory { get; set; }
-    public Guid? ParentCategoryId { get; set; }
-    public IEnumerable<Category> ParentNextCategorys { get; set; }
+    [ForeignKey("ParentId")]
+    public Category Parent { get; set; }
+    public Guid? ParentId { get; set; }
+
   }
 }

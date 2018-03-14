@@ -28,7 +28,6 @@ namespace Eshop.Dashboard.Data.Entities
     [Required]
     public double Price { get; set; }
 
-    public ICollection<ProductProperty> ProductProperties { get; set; }
-      = new List<ProductProperty>();
+    public ICollection<ProductProperty> ProductProperties { get; set; } = new List<ProductProperty>();
   }
 }

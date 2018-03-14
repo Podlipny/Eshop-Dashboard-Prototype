@@ -10,7 +10,7 @@ namespace Eshop.Dashboard.Data.Seeders
   {
     public static void Seed(EshopDbContext context)
     {
-      context.Products.RemoveRange(context.Products);
+      context.Product.RemoveRange(context.Product);
       context.SaveChanges();
 
       // init seed data
@@ -58,7 +58,7 @@ namespace Eshop.Dashboard.Data.Seeders
         });
       }
 
-      context.Products.AddRange(products);
+      context.Product.AddRange(products);
       context.SaveChanges();
     }
   }
