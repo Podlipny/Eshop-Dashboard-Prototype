@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Eshop.Dashboard.API
 {
@@ -53,6 +54,12 @@ namespace Eshop.Dashboard.API
         {
           options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         });
+
+      // Register the Swagger generator, defining one or more Swagger documents  
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new Info { Title = "EShop API", Version = "v1" });
+      });
 
       var connectionString = Configuration["connectionStrings:eshopDasboardDBConnectionString"];
       services.AddDbContext<EshopDbContext>(o => o.UseSqlServer(connectionString));
@@ -97,6 +104,15 @@ namespace Eshop.Dashboard.API
           });
         });
       }
+
+      // Enable middleware to serve generated Swagger as a JSON endpoint.  
+      app.UseSwagger();
+
+      // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.  
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Eshop API V1");
+      });
 
       //TODO: move this into separate automapper config file
       AutoMapper.Mapper.Initialize(cfg =>
