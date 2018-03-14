@@ -33,7 +33,7 @@
           <input matInput placeholder="Telephone">
         </mat-form-field>
         
-        <mat-checkbox>Accept terms and conditions</mat-checkbox>
+        <mat-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]="acceptTerms">Accept terms and conditions</mat-checkbox>
       </form>
     </mat-card-content>
   
