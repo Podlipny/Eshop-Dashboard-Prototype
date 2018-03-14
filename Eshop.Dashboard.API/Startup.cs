@@ -35,6 +35,9 @@ namespace Eshop.Dashboard.API
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      // allows CORS
+      services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -120,6 +123,8 @@ namespace Eshop.Dashboard.API
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDtoViewModel>();
       });
+
+      app.UseCors("AllowAll");
 
       app.UseAuthentication();
 

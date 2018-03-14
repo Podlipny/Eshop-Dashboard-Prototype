@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { IUser } from '../model/user';
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { ICredentials } from '../model/ICredentials';
+
 
 @Injectable()
 export class UserService {
@@ -8,18 +14,7 @@ export class UserService {
   tokenExpiration: string;
   isLoggedIn: boolean = true;
 
-  login(userobj: IUser, rememberme: boolean = false) {
-    this.user = userobj;
-
-    // TODO: call navigation to dashboard
-    // TODO: access API to recieve JWT token
-    // TODO: save token to localstorage
-  }
-
-  register(userobj: IUser) {
-    this.user = userobj;
-
-    // TODO: call navigation to login
+  constructor(private http: HttpClient, private _router: Router) {
   }
 
   logout() {

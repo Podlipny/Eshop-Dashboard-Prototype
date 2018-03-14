@@ -21,7 +21,7 @@ namespace Eshop.Dashboard.Data.Seeders
       {
         Id = Guid.NewGuid(),
         Username = "admin",
-        Password = PasswordHasher.CreateHash("admin", "AN>1w`YqLNgY})adEzwyQI&qblGW}[5%9MH9de'Ov:R(}U?g/au!>#Mtxk=>@d"),
+        Password = PasswordHasher.CreateHash("admin123", "AN>1w`YqLNgY})adEzwyQI&qblGW}[5%9MH9de'Ov:R(}U?g/au!>#Mtxk=>@d"),
         Firstname = "Jarmil",
         Lastname = "Prdel",
       });
