@@ -24,5 +24,8 @@ namespace Eshop.Dashboard.Data.Entities
     [MaxLength(100)]
     public string Lastname { get; set; }
 
+    [MaxLength(12)]
+    public int? Telephone { get; set; }
+
   }
 }

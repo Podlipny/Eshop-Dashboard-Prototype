@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { SideNavComponent } from './sidenav/sidenav.component';
 
 @NgModule({
@@ -9,7 +11,9 @@ import { SideNavComponent } from './sidenav/sidenav.component';
     MaterialModule
   ],
   exports: [
-    MaterialModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     SideNavComponent
   ],
   declarations: [SideNavComponent]

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
+import { MaterialModule } from '../shared/material.module';
 
 import { DashboardRoutingModule } from './dashboard.routing';
 import { MainViewComponent } from './main-view/main-view.component';
@@ -12,7 +13,8 @@ import { CustomentsComponent } from './customents/customents.component';
 @NgModule({
   imports: [
     DashboardRoutingModule,
-    SharedModule
+    SharedModule,
+    MaterialModule
   ],
   declarations: [
     DashboardComponent,
