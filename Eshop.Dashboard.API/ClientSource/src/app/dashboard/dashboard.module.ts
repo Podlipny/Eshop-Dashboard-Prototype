@@ -10,6 +10,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
+import { ProductService } from './services/product.service';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { UsersModule } from './modules/users/users.module';
     ToolbarComponent,
     DashboardComponent,
     BoardViewComponent
-  ]
+  ],
+  providers: [ ProductService ]
 })
 export class DashboardModule { }

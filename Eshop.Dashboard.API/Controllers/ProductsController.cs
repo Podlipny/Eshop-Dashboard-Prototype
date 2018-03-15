@@ -20,7 +20,7 @@ namespace Eshop.Dashboard.API.Controllers
       _productsRepository = productsRepository;
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet(Name = "GetProducts")]
     public IActionResult Get()
     {

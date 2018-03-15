@@ -1,131 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { TdDataTableService, TdDataTableSortingOrder, ITdDataTableSortChangeEvent, ITdDataTableColumn } from '@covalent/core/data-table';
 import { IPageChangeEvent } from '@covalent/core/paging';
+import { ProductService } from '../../../services/product.service';
+import { IProduct } from '../../../../model/IProduct';
+import { ToastService } from '../../../../core/toast/toast.service';
 
 const DECIMAL_FORMAT: (v: any) => any = (v: number) => v.toFixed(2);
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
   styleUrls: ['./all-products.component.scss']
 })
 export class AllProductsComponent implements OnInit {
   columns: ITdDataTableColumn[] = [
-    { name: 'first_name',  label: 'First Name', sortable: true, width: 150 },
-    { name: 'last_name', label: 'Last Name', filter: true, sortable: false },
-    { name: 'gender', label: 'Gender', hidden: false },
-    { name: 'email', label: 'Email', sortable: true, width: 250 },
-    { name: 'balance', label: 'Balance', numeric: true, format: DECIMAL_FORMAT },
+    { name: 'name',  label: 'Product name', sortable: true, width: 300 },
+    { name: 'description', label: 'Description', filter: true, sortable: false },
+    { name: 'price', label: 'Price', numeric: true, sortable: true, format: DECIMAL_FORMAT },
   ];
 
-  data: any[] = [
-    {
-      "balance": 7454.6,
-      "email": "sclutterham0@123-reg.co.uk",
-      "first_name": "Sully",
-      "gender": "Male",
-      "img": "https://robohash.org/similiquemodiautem.bmp?size=50x50&set=set1",
-      "ip_address": "158.0.165.138",
-      "last_name": "Clutterham"
-    },
-    {
-      "balance": 3561.4,
-      "email": "mevason1@usatoday.com",
-      "first_name": "Mateo",
-      "gender": "Male",
-      "img": "https://robohash.org/molestiaeadquia.bmp?size=50x50&set=set1",
-      "ip_address": "68.147.207.137",
-      "last_name": "Evason"
-    },
-    {
-      "balance": 4456.3,
-      "email": "lgardener2@wordpress.org",
-      "first_name": "Lira",
-      "gender": "Female",
-      "img": "https://robohash.org/laboredolorumvelit.jpg?size=50x50&set=set1",
-      "ip_address": "96.85.6.31",
-      "last_name": "Gardener"
-    },
-    {
-      "balance": 5938,
-      "email": "edunckley3@instagram.com",
-      "first_name": "Edvard",
-      "gender": "Male",
-      "img": "https://robohash.org/ullamquaedeleniti.png?size=50x50&set=set1",
-      "ip_address": "233.189.117.211",
-      "last_name": "Dunckley"
-    },
-    {
-      "balance": 4241.6,
-      "email": "gsouza4@squidoo.com",
-      "first_name": "Gwynne",
-      "gender": "Female",
-      "img": "https://robohash.org/possimusrepellendusodio.png?size=50x50&set=set1",
-      "ip_address": "164.226.80.40",
-      "last_name": "Souza"
-    },
-    {
-      "balance": 6558,
-      "email": "sfurmedge5@furl.net",
-      "first_name": "Sena",
-      "gender": "Female",
-      "img": "https://robohash.org/iustoillumsit.png?size=50x50&set=set1",
-      "ip_address": "192.214.177.38",
-      "last_name": "Furmedge"
-    },
-    {
-      "balance": 3159.2,
-      "email": "cdykes6@china.com.cn",
-      "first_name": "Christian",
-      "gender": "Male",
-      "img": "https://robohash.org/exveniama.jpg?size=50x50&set=set1",
-      "ip_address": "147.35.25.192",
-      "last_name": "Dykes"
-    },
-    {
-      "balance": 1471,
-      "email": "sklagge7@dell.com",
-      "first_name": "Sada",
-      "gender": "Female",
-      "img": "https://robohash.org/exercitationemtotamenim.jpg?size=50x50&set=set1",
-      "ip_address": "143.193.248.153",
-      "last_name": "Klagge"
-    },
-    {
-      "balance": 9969.7,
-      "email": "glewerenz8@europa.eu",
-      "first_name": "Genia",
-      "gender": "Female",
-      "img": "https://robohash.org/enimdoloremqueut.jpg?size=50x50&set=set1",
-      "ip_address": "104.0.250.224",
-      "last_name": "Lewerenz"
-    },
-    {
-      "balance": 7253.5,
-      "email": "ddemarchi9@taobao.com",
-      "first_name": "Daloris",
-      "gender": "Female",
-      "img": "https://robohash.org/uteaquearchitecto.jpg?size=50x50&set=set1",
-      "ip_address": "124.166.67.100",
-      "last_name": "De Marchi"
-    }
-  ]; // see json data
+  productData: IProduct[] = [];
 
-  filteredData: any[] = this.data;
-  filteredTotal: number = this.data.length;
+  filteredData: any[] = this.productData;
+  filteredTotal: number = this.productData.length;
 
   searchTerm: string = '';
   fromRow: number = 1;
   currentPage: number = 1;
-  pageSize: number = 50;
-  sortBy: string = 'first_name';
+  pageSize: number = 10;
+  sortBy: string = 'name';
   selectedRows: any[] = [];
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Ascending;
 
-  constructor(private _dataTableService: TdDataTableService) { }
+  constructor(private _dataTableService: TdDataTableService,
+              private _productService: ProductService,
+              private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.filter();
+    this._productService.loalAllProducts().subscribe(data => {
+      this.productData = data;
+      this.filter();
+      // we are manually telling change detection strategy to change changes, because
+      // AllProductsComponent works with empty product array[], but before rendering window, we
+      // will load data
+      this.cdr.detectChanges();
+    }, error => {
+      console.log(error.error);
+    });
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
@@ -152,7 +74,7 @@ export class AllProductsComponent implements OnInit {
   }
 
   filter(): void {
-    let newData: any[] = this.data;
+    let newData: any[] = this.productData;
     const excludedColumns: string[] = this.columns
     .filter((column: ITdDataTableColumn) => {
       return ((column.filter === undefined && column.hidden === true) ||

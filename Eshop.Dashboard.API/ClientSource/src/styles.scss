@@ -1,7 +1,7 @@
+@import '~@angular/material/theming';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import '~@covalent/core/theming/all-theme';
 
-// @include mat-core();
+@import '~@covalent/core/theming/all-theme';
 
 /* fallback */
 @font-face {
@@ -10,6 +10,30 @@
   font-weight: 400;
   src: url(https://fonts.gstatic.com/s/materialicons/v36/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
 }
+
+// custom style
+$typography: mat-typography-config(
+  $font-family: 'Roboto, monospace',
+  $headline: mat-typography-level(32px, 48px, 700)
+);
+
+@include mat-core($typography); // $typography is an **optional** argument for the mat-core
+@include covalent-core();
+
+$primary: mat-palette($mat-indigo);
+$accent:  mat-palette($mat-pink, A200, A100, A400);
+$warn:    mat-palette($mat-red);
+
+$theme: mat-light-theme($primary, $accent, $warn);
+
+// Include covalent utility classes
+@include covalent-utilities();
+// Include flex layout classes
+@include covalent-layout();
+// Include covalent color classes
+@include covalent-colors();
+@include covalent-theme($theme);
+
 
 .material-icons {
   font-family: 'Material Icons';
@@ -30,4 +54,5 @@
 body {
   margin: 0;
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }

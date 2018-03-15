@@ -5,6 +5,7 @@ import { IUser } from '../model/user';
 import { environment } from '../../environments/environment';
 import { ICredentials } from '../model/ICredentials';
 import { UserService } from '../core/user.service';
+import { HttpHelper } from '../helpers/HttpHelper';
 
 
 @Injectable()
@@ -15,19 +16,10 @@ export class AuthService {
 
   login(credentialsObj: ICredentials): Observable<any> {
     return this.http.post(environment.apiUrl + 'auth', credentialsObj);
-
-    // TODO: call navigation to dashboard
-    // TODO: access API to recieve JWT token
-    // TODO: save token to localstorage
   }
 
   register(userobj: IUser): Observable<IUser> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8;',
-      'Accept': '*/*'
-    });
-
-    return this.http.post<IUser>(environment.apiUrl + 'users', userobj, { headers: headers });
+    return this.http.post<IUser>(environment.apiUrl + 'users', userobj, { headers: HttpHelper.getHeadres() });
   }
 
   logout() {
