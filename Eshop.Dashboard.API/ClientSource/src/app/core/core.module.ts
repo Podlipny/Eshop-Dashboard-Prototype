@@ -4,19 +4,25 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { UserService } from './user.service';
+import { ToastModule } from './toast/toast.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ToastModule
   ],
   exports: [
     CommonModule,
     RouterModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ToastModule
   ],
   declarations: [],
   providers: [

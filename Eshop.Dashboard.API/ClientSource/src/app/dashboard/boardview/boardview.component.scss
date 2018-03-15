@@ -1,0 +1,17 @@
+:host {
+  width: 100%;
+}
+
+.wrapper {
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+}
+
+.mat-card {
+  margin: 5px;
+  flex-grow: 1;
+}

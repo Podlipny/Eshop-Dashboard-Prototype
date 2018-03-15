@@ -3,24 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../core/auth-guard.service';
 
-import { MainViewComponent } from './main-view/main-view.component';
-import { DashboardComponent } from './dashboard.component';
-import { UsersComponent } from './users/users.component';
-import { ProductsComponent } from './products/products.component';
-import { CustomentsComponent } from './customents/customents.component';
+import { BoardViewComponent } from './boardview/boardview.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const dasboardRoutes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
-      { path: '', component: MainViewComponent },
-      { path: 'customers', component: CustomentsComponent },
-      { path: 'products', component: ProductsComponent },
-      { path: 'users', component: UsersComponent },
-          // { path: 'dashboard', component: DashboardComponent },
-          // { path: 'country-list/:count', component: CountryListComponent },
-          // { path: 'country-detail/:id/:operation', component: CountryDetailComponent },
-          // { path: 'country-maint', component: CountryMaintComponent },
-          // { path: 'settings', component: SettingsComponent },
+      { path: '', component: BoardViewComponent },
+      { path: 'settings', loadChildren: 'app/dashboard/modules/settings/settings.module#SettingsModule' },
+      { path: 'customers', loadChildren: 'app/dashboard/modules/customers/customers.module#CustomersModule' },
+      { path: 'products', loadChildren: 'app/dashboard/modules/products/products.module#ProductsModule' },
+      { path: 'users', loadChildren: 'app/dashboard/modules/users/users.module#UsersModule' }
     ] },
 ];
 

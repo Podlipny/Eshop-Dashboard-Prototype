@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { IUser } from '../../model/user';
 import { UserService } from '../../core/user.service';
 import { AuthService } from '../auth.service';
 import { PasswordValidation } from '../../helpers/PasswordValidation';
+import { ToastService } from '../../core/toast/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +16,7 @@ import { PasswordValidation } from '../../helpers/PasswordValidation';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   user: IUser;
+  registrationError: string = null;
 
   username: string = '';
   firstname: string = '';
@@ -25,7 +28,11 @@ export class RegisterComponent implements OnInit {
   requireAlert: string = 'This field is required';
   matchPasswordAlert: string = 'Passwords must match!';
 
-  constructor(private fb: FormBuilder, private _userService: UserService, private _authService: AuthService) {
+  constructor(private fb: FormBuilder,
+              private _userService: UserService,
+              private _authService: AuthService,
+              private _router: Router,
+              private toastService: ToastService) {
     this.registerForm = fb.group({
       'username': [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
       'firstname': [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
@@ -45,8 +52,10 @@ export class RegisterComponent implements OnInit {
   register(user: IUser) {
     this._authService.register(user).subscribe(data => {
       this._userService.user = data;
+      this._router.navigate(['/']);
     }, error => {
-      console.log('Failed to fetch users');
+      this.registrationError = error.error;
+      console.log('Unexpected error happend!');
     });
   }
 

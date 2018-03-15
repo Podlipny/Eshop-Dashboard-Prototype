@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Eshop.Dashboard.API.ViewModels.Products;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
@@ -68,6 +69,7 @@ namespace Eshop.Dashboard.API
       services.AddDbContext<EshopDbContext>(o => o.UseSqlServer(connectionString));
 
       services.AddScoped<IUsersRepository, UsersRepository>();
+      services.AddScoped<IProductsRepository, ProductsRepository>();
 
       services.AddMemoryCache();
 
@@ -122,6 +124,7 @@ namespace Eshop.Dashboard.API
       {
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDtoViewModel>();
+        cfg.CreateMap<Product, ProductDtoViewModel>();
       });
 
       app.UseCors("AllowAll");

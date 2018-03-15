@@ -7,13 +7,11 @@ import { MaterialModule } from '../shared/material.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthService } from './auth.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     SharedModule,
     MaterialModule,
-    HttpClientModule,
     AuthRoutingModule
   ],
   exports: [

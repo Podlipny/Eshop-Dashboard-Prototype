@@ -8,7 +8,7 @@ namespace Eshop.Dashboard.Data.Seeders
   {
     public static void Seed(EshopDbContext context)
     {
-      context.Category.RemoveRange(context.Category);
+      context.Categories.RemoveRange(context.Categories);
       context.SaveChanges();
 
       // init seed data
@@ -75,7 +75,7 @@ namespace Eshop.Dashboard.Data.Seeders
         Name = "Category 4",
       });
 
-      context.Category.AddRange(categories);
+      context.Categories.AddRange(categories);
       context.SaveChanges();
     }
   }

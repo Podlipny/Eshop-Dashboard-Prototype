@@ -15,7 +15,6 @@ import { AuthGuard } from './core/auth-guard.service';
 import { UserService } from './core/user.service';
 
 const routes: Routes = [
-  { path: '', loadChildren: 'app/auth/auth.module#AuthModule' },
   {
     path: '',
     loadChildren: 'app/dashboard/dashboard.module#DashboardModule',
@@ -34,9 +33,8 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     CoreModule,
-    RouterModule.forRoot(routes),
     AuthModule,
-    DashboardModule
+    RouterModule.forRoot(routes)
   ],
   providers: [
     UserService,

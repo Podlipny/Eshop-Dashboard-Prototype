@@ -15,6 +15,7 @@ namespace Eshop.Dashboard.Data
 
       UsersSeeder.Seed(context);
       CategorySeeder.Seed(context);
+      ProductSeeder.Seed(context);
     }
   }
 

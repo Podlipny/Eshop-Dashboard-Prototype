@@ -10,7 +10,7 @@ namespace Eshop.Dashboard.Data.Seeders
   {
     public static void Seed(EshopDbContext context)
     {
-      context.Product.RemoveRange(context.Product);
+      context.Products.RemoveRange(context.Products);
       context.SaveChanges();
 
       // init seed data
@@ -33,7 +33,7 @@ namespace Eshop.Dashboard.Data.Seeders
       }
 
       // Category 1.1 - GUID a3749477-f823-4124-aa4a-fc9ad5e79cd6
-      for (int i = 0; i < 10; i++)
+      for (int i = 0; i < 20; i++)
       {
         products.Add(new Product()
         {
@@ -46,7 +46,7 @@ namespace Eshop.Dashboard.Data.Seeders
       }
 
       // Category 2 - GUID 60188a2b-2784-4fc4-8df8-8919ff838b0b
-      for (int i = 0; i < 10; i++)
+      for (int i = 0; i < 50; i++)
       {
         products.Add(new Product()
         {
@@ -58,7 +58,7 @@ namespace Eshop.Dashboard.Data.Seeders
         });
       }
 
-      context.Product.AddRange(products);
+      context.Products.AddRange(products);
       context.SaveChanges();
     }
   }
