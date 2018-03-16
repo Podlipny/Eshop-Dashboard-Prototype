@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,7 +71,12 @@ namespace Eshop.Dashboard.API
       var connectionString = Configuration["connectionStrings:eshopDasboardDBConnectionString"];
       services.AddDbContext<EshopDbContext>(o => o.UseSqlServer(connectionString));
 
-      services.AddScoped<IUsersRepository, UsersRepository>();
+      services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+      services.AddScoped<IUrlHelper>(implementationFactory =>
+      {
+        var actionContext = implementationFactory.GetService<IActionContextAccessor>().ActionContext;
+        return new UrlHelper(actionContext);
+      }); services.AddScoped<IUsersRepository, UsersRepository>();
       services.AddScoped<IProductsRepository, ProductsRepository>();
 
       services.AddMemoryCache();
@@ -81,7 +89,7 @@ namespace Eshop.Dashboard.API
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        dbContext.EnsureSeedDataForContext();
+        //dbContext.EnsureSeedDataForContext();
       }
       else
       {
@@ -124,7 +132,8 @@ namespace Eshop.Dashboard.API
       {
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDtoViewModel>();
-        cfg.CreateMap<Product, ProductDtoViewModel>();
+        cfg.CreateMap<Product, ProductDtoViewModel>()
+          .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
       });
 
       app.UseCors("AllowAll");

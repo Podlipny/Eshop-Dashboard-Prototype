@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Eshop.Dashboard.Data.Entities;
+using Eshop.Dashboard.Services.Helpers;
 
 namespace Eshop.Dashboard.Services.Repositories
 {
@@ -10,6 +11,8 @@ namespace Eshop.Dashboard.Services.Repositories
     Product GetProduct(Guid productId);
 
     IEnumerable<Product> GetProducts();
+
+    PagedList<Product> GetProducts(ProductResourceParameters productResourceParameters);
 
     bool ProductExists(Guid productId);
 

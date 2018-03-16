@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Eshop.Dashboard.Data\Eshop.Dashboard.Data.csproj" />
   </ItemGroup>
 
