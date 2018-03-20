@@ -8,17 +8,33 @@ using Eshop.Dashboard.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Dynamic.Core;
+using Eshop.Dashboard.Services.Services;
 
 namespace Eshop.Dashboard.Services.Repositories
 {
+  public class ProductDtoViewModel
+  {
+    public Guid Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string Description { get; set; }
+
+    public string Category { get; set; }
+
+    public double Price { get; set; }
+  }
+
   public class ProductsRepository : BaseRepository, IProductsRepository
   {
     private IConfiguration _configuration;
+    private IPropertyMappingService _propertyMappingService;
 
-    public ProductsRepository(EshopDbContext context, IConfiguration configuration)
+    public ProductsRepository(EshopDbContext context, IConfiguration configuration, IPropertyMappingService propertyMappingService)
       : base(context)
     {
       _configuration = configuration;
+      _propertyMappingService = propertyMappingService;
     }
 
     /// <summary>
@@ -48,8 +64,9 @@ namespace Eshop.Dashboard.Services.Repositories
     public PagedList<Product> GetProducts(ProductResourceParameters productResourceParameters)
     {
       //var collectionBeforePaging = _context.Products.ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<AuthorDto, Author>());
-      IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category).OrderBy(productResourceParameters.OrderBy.Trim().ToLowerInvariant() + " ascending");
-      
+      //IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category).OrderBy(productResourceParameters.OrderBy.Trim().ToLowerInvariant() + " ascending");
+      IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category).ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDtoViewModel, Product>());
+
       if (!string.IsNullOrEmpty(productResourceParameters.SearchQuery))
       {
         // trim & ignore casing

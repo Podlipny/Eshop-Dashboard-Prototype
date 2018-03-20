@@ -7,7 +7,9 @@ using Eshop.Dashboard.API.ViewModels.Products;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
+using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
+using Eshop.Dashboard.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -20,7 +22,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -76,7 +77,27 @@ namespace Eshop.Dashboard.API
       {
         var actionContext = implementationFactory.GetService<IActionContextAccessor>().ActionContext;
         return new UrlHelper(actionContext);
-      }); services.AddScoped<IUsersRepository, UsersRepository>();
+      });
+      services.AddTransient<IPropertyMappingService>(implementationFactory =>
+      {
+        // TODO: move this into separate file
+        IList<IPropertyMapping> propertyMappings = new List<IPropertyMapping>();
+
+        // TODO: use nameof from interface
+        Dictionary<string, PropertyMappingValue> productPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
+        {
+          {"Id", new PropertyMappingValue(new List<string>() {"Id"})},
+          {"Name", new PropertyMappingValue(new List<string>() {"Name"})},
+          {"Description", new PropertyMappingValue(new List<string>() {"Description"})},
+          {"Price", new PropertyMappingValue(new List<string>() {"Price"})},
+          {"Category", new PropertyMappingValue(new List<string>() {"Category.Name"})}
+        };
+
+        propertyMappings.Add(new PropertyMapping<Services.Repositories.ProductDtoViewModel, Product>(productPropertyMapping));
+        return new PropertyMappingService(propertyMappings);
+      });
+
+      services.AddScoped<IUsersRepository, UsersRepository>();
       services.AddScoped<IProductsRepository, ProductsRepository>();
 
       services.AddMemoryCache();
@@ -89,7 +110,7 @@ namespace Eshop.Dashboard.API
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        //dbContext.EnsureSeedDataForContext();
+        dbContext.EnsureSeedDataForContext();
       }
       else
       {
@@ -132,7 +153,7 @@ namespace Eshop.Dashboard.API
       {
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDtoViewModel>();
-        cfg.CreateMap<Product, ProductDtoViewModel>()
+        cfg.CreateMap<Product, ViewModels.Products.ProductDtoViewModel>()
           .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
       });
 

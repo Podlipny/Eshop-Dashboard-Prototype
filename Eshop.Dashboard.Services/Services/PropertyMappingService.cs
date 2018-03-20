@@ -22,17 +22,17 @@ namespace Eshop.Dashboard.Services.Services
     //      {"Name", new PropertyMappingValue(new List<string>() {"FirstName", "LastName"})}
     //    };
 
-    private IList<IPropertyMapping> propertyMappings = new List<IPropertyMapping>();
+    private IEnumerable<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
 
-    public PropertyMappingService()
+    public PropertyMappingService(IEnumerable<IPropertyMapping> propertyMappings)
     {
-      //propertyMappings.Add(new PropertyMapping<ProductD, Product>(_authorPropertyMapping));
+      _propertyMappings = propertyMappings;
     }
 
     public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()
     {
       // get matching mapping
-      var matchingMapping = propertyMappings.OfType<PropertyMapping<TSource, TDestination>>();
+      var matchingMapping = _propertyMappings.OfType<PropertyMapping<TSource, TDestination>>();
       if (matchingMapping.Count() == 1)
       {
         // prohledame mapping dictionary a poukud nejakou najdeme, tak ji vratime

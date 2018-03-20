@@ -68,22 +68,22 @@ namespace Eshop.Dashboard.Services.Helpers
 
         // Run through the property names in reverse
         // so the orderby clauses are applied in the correct order
+        // example: TSource "name" cound be composed from "Firstname" and "Lastname"
         foreach (var destinationProperty in propertyMappingValue.DestinationProperties.Reverse())
         {
-          // revert sort order if necessary
+          // revert sort order if necessary - ASC->DESC/DESC->ASC
           if (propertyMappingValue.Revert)
           {
             orderDescending = !orderDescending;
           }
+          // we are chaning source.OrderBy() so we can order by multiple fields
           source = source.OrderBy(destinationProperty + (orderDescending ? " descending" : " ascending"));
         }
       }
       return source;
     }
 
-    public static IQueryable<object> ShapeData<TSource>(this IQueryable<TSource> source,
-        string fields,
-       Dictionary<string, PropertyMappingValue> mappingDictionary)
+    public static IQueryable<object> ShapeData<TSource>(this IQueryable<TSource> source, string fields, Dictionary<string, PropertyMappingValue> mappingDictionary)
     {
       //if (source == null)
       //{

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Eshop.Dashboard.Services.Helpers
 {
+  /// <summary>
+  /// Defines mapping parametres for originated property
+  /// </summary>
   public class PropertyMappingValue
   {
     public IEnumerable<string> DestinationProperties { get; private set; }

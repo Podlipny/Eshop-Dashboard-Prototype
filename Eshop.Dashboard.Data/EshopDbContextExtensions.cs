@@ -10,7 +10,6 @@ namespace Eshop.Dashboard.Data
     public static void EnsureSeedDataForContext(this EshopDbContext context)
     {
       // first, clear the database.  This ensures we can always start 
-      context.Database.EnsureDeleted();
       context.Database.EnsureCreated();
 
       UsersSeeder.Seed(context);
