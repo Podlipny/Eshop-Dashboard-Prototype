@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eshop.Dashboard.API.ViewModels.Users
+namespace Eshop.Dashboard.Services.Dto
 {
   public class UserDtoViewModel
   {

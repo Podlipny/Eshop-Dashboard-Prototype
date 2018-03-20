@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Eshop.Dashboard.Data.Entities
 {
-  public class Category
+  public class UserRole
   {
     [Key]
     public Guid Id { get; set; }
@@ -13,9 +12,8 @@ namespace Eshop.Dashboard.Data.Entities
     [MaxLength(255)]
     public string Name { get; set; }
 
-    [ForeignKey("ParentId")]
-    public Category Parent { get; set; }
-    public Guid? ParentId { get; set; }
-
+    [Required]
+    [MaxLength(20)]
+    public string Code { get; set; }
   }
 }

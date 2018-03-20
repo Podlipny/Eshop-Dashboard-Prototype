@@ -14,8 +14,12 @@ namespace Eshop.Dashboard.Data
       context.Database.EnsureCreated();
 
       UsersSeeder.Seed(context);
+      UserRolesSeeder.Seed(context);
+
       CategorySeeder.Seed(context);
       ProductSeeder.Seed(context);
+
+      OrderStateSeeder.Seed(context);
     }
   }
 

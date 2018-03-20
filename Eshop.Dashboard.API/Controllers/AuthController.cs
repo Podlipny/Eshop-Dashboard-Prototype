@@ -6,6 +6,7 @@ using AutoMapper;
 using Eshop.Dashboard.API.Helpers;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
+using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
