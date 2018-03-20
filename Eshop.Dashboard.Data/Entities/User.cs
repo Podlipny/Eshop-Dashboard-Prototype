@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +15,10 @@ namespace Eshop.Dashboard.Data.Entities
     public string Username { get; set; }
 
     [Required]
+    [MaxLength(255)]
+    public string Email { get; set; }
+
+    [Required]
     [MaxLength(512)]
     public string Password { get; set; }
 
@@ -25,14 +30,17 @@ namespace Eshop.Dashboard.Data.Entities
     [MaxLength(100)]
     public string Lastname { get; set; }
 
-    [ForeignKey("ContactId")]
-    public Contact Contact { get; set; }
-    public Guid? ContactId { get; set; }
+    [StringLength(10)]
+    public int Ico { get; set; }
 
-    [Required]
-    [ForeignKey("UserRoleId")]
-    public UserRole UserRole { get; set; }
-    public Guid UserRoleId { get; set; }
+    [StringLength(12)]
+    public string Dic { get; set; }
+
+    [ForeignKey("ContactId")]
+    public Guid? ContactId { get; set; }
+    public Contact Contact { get; set; }
+
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
   }
 }

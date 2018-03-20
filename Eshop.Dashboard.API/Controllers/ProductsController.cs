@@ -30,7 +30,7 @@ namespace Eshop.Dashboard.API.Controllers
     public IActionResult Get(ProductResourceParameters productResourceParameters)
     {
       var productsFromRepo = _productsRepository.GetProducts(productResourceParameters);
-      var products = Mapper.Map<IEnumerable<ViewModels.Products.ProductDtoViewModel>>(productsFromRepo);
+      var products = Mapper.Map<IEnumerable<ProductDtoViewModel>>(productsFromRepo);
 
       var previousPageLink = productsFromRepo.HasPrevious ? CreateProductsResourceUri(productResourceParameters, ResourceUriType.PreviousPage) : null;
 
@@ -59,7 +59,7 @@ namespace Eshop.Dashboard.API.Controllers
         return NotFound($"Product with id: {id} does not found!");
       }
 
-      var productToReturn = Mapper.Map<ViewModels.Products.ProductDtoViewModel>(productEntity);
+      var productToReturn = Mapper.Map<ProductDtoViewModel>(productEntity);
 
       return Ok(productToReturn);
     }
@@ -83,7 +83,6 @@ namespace Eshop.Dashboard.API.Controllers
         var productToReturn = Mapper.Map<Product>(productEntity);
 
         return CreatedAtRoute("GetProduct", new { id = productToReturn.Id }, productToReturn);
-
       }
 
       // return 422 - !ModelState.IsValid

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Eshop.Dashboard.Data.Entities
 {
-
-  public class ProductProperty
+  public class Role
   {
     [Key]
     public Guid Id { get; set; }
@@ -17,11 +15,7 @@ namespace Eshop.Dashboard.Data.Entities
     public string Name { get; set; }
 
     [Required]
-    [MaxLength(255)]
-    public string Value { get; set; }
-
-    [ForeignKey("ProductId")]
-    public Guid ProductId { get; set; }
-    public Product Product { get; set; }
+    [MaxLength(20)]
+    public string Code { get; set; }
   }
 }

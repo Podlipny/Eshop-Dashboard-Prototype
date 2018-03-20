@@ -11,9 +11,10 @@ using System;
 namespace Eshop.Dashboard.Data.Migrations
 {
     [DbContext(typeof(EshopDbContext))]
-    partial class EshopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180320195121_eshopDatabaseInitMigration")]
+    partial class eshopDatabaseInitMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,6 +55,10 @@ namespace Eshop.Dashboard.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
                     b.Property<int>("Psc")
                         .HasMaxLength(6);
 
@@ -67,6 +72,42 @@ namespace Eshop.Dashboard.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("ContactId");
+
+                    b.Property<string>("Dic")
+                        .HasMaxLength(12);
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Ico")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(512);
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Order", b =>
@@ -218,7 +259,41 @@ namespace Eshop.Dashboard.Data.Migrations
                     b.ToTable("ProductStates");
                 });
 
-            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Role", b =>
+            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("ContactId");
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(512);
+
+                    b.Property<Guid>("UserRoleId");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactId");
+
+                    b.HasIndex("UserRoleId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -232,66 +307,6 @@ namespace Eshop.Dashboard.Data.Migrations
                         .HasMaxLength(255);
 
                     b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("ContactId");
-
-                    b.Property<string>("Dic")
-                        .HasMaxLength(12);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Ico")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("Lastname")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(512);
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.UserRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("RoleId")
-                        .IsRequired();
-
-                    b.Property<Guid?>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
                 });
@@ -330,9 +345,16 @@ namespace Eshop.Dashboard.Data.Migrations
                         .HasForeignKey("ParentId");
                 });
 
+            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Customer", b =>
+                {
+                    b.HasOne("Eshop.Dashboard.Data.Entities.Contact", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId");
+                });
+
             modelBuilder.Entity("Eshop.Dashboard.Data.Entities.Order", b =>
                 {
-                    b.HasOne("Eshop.Dashboard.Data.Entities.User", "CreatedBy")
+                    b.HasOne("Eshop.Dashboard.Data.Entities.Customer", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -391,18 +413,10 @@ namespace Eshop.Dashboard.Data.Migrations
                     b.HasOne("Eshop.Dashboard.Data.Entities.Contact", "Contact")
                         .WithMany()
                         .HasForeignKey("ContactId");
-                });
 
-            modelBuilder.Entity("Eshop.Dashboard.Data.Entities.UserRole", b =>
-                {
-                    b.HasOne("Eshop.Dashboard.Data.Entities.Role", "Role")
+                    b.HasOne("Eshop.Dashboard.Data.Entities.UserRole", "UserRole")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Eshop.Dashboard.Data.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

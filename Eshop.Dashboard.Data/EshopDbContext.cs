@@ -11,8 +11,8 @@ namespace Eshop.Dashboard.Data
 
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<Contact> Contacts { get; set; }
-    public DbSet<Customer> Customers { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
 
     public DbSet<Product> Products { get; set; }

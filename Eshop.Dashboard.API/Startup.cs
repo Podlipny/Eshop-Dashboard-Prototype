@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Eshop.Dashboard.API.ViewModels.Products;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
-<<<<<<< HEAD
-using Eshop.Dashboard.Services.Helpers;
-=======
 using Eshop.Dashboard.Services.Dto;
->>>>>>> 44f4c4b5e7a98efcafd045e0864b15d8cfbc88b3
 using Eshop.Dashboard.Services.Repositories;
 using Eshop.Dashboard.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -82,25 +74,8 @@ namespace Eshop.Dashboard.API
         var actionContext = implementationFactory.GetService<IActionContextAccessor>().ActionContext;
         return new UrlHelper(actionContext);
       });
-      services.AddTransient<IPropertyMappingService>(implementationFactory =>
-      {
-        // TODO: move this into separate file
-        IList<IPropertyMapping> propertyMappings = new List<IPropertyMapping>();
 
-        // TODO: use nameof from interface
-        Dictionary<string, PropertyMappingValue> productPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
-        {
-          {"Id", new PropertyMappingValue(new List<string>() {"Id"})},
-          {"Name", new PropertyMappingValue(new List<string>() {"Name"})},
-          {"Description", new PropertyMappingValue(new List<string>() {"Description"})},
-          {"Price", new PropertyMappingValue(new List<string>() {"Price"})},
-          {"Category", new PropertyMappingValue(new List<string>() {"Category.Name"})}
-        };
-
-        propertyMappings.Add(new PropertyMapping<Services.Repositories.ProductDtoViewModel, Product>(productPropertyMapping));
-        return new PropertyMappingService(propertyMappings);
-      });
-
+      services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
       services.AddScoped<IUsersRepository, UsersRepository>();
       services.AddScoped<IProductsRepository, ProductsRepository>();
 
@@ -114,7 +89,7 @@ namespace Eshop.Dashboard.API
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        dbContext.EnsureSeedDataForContext();
+        //dbContext.EnsureSeedDataForContext();
       }
       else
       {
@@ -157,7 +132,7 @@ namespace Eshop.Dashboard.API
       {
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDtoViewModel>();
-        cfg.CreateMap<Product, ViewModels.Products.ProductDtoViewModel>()
+        cfg.CreateMap<Product, Services.Dto.ProductDtoViewModel>()
           .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
       });
 

@@ -13,7 +13,7 @@ namespace Eshop.Dashboard.Data
       context.Database.EnsureCreated();
 
       UsersSeeder.Seed(context);
-      UserRolesSeeder.Seed(context);
+      RolesSeeder.Seed(context);
 
       CategorySeeder.Seed(context);
       ProductSeeder.Seed(context);

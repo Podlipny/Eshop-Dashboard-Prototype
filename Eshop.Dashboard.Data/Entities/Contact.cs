@@ -10,10 +10,6 @@ namespace Eshop.Dashboard.Data.Entities
     [Key]
     public Guid Id { get; set; }
 
-    [Required]
-    [MaxLength(255)]
-    public string Email { get; set; }
-
     [MaxLength(12)]
     public int? Telephone { get; set; }
 

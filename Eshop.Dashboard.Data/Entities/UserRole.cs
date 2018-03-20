@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Eshop.Dashboard.Data.Entities
 {
@@ -9,11 +10,13 @@ namespace Eshop.Dashboard.Data.Entities
     public Guid Id { get; set; }
 
     [Required]
-    [MaxLength(255)]
-    public string Name { get; set; }
+    [ForeignKey("UserId")]
+    public Guid? UserId { get; set; }
+    public User User { get; set; }
 
     [Required]
-    [MaxLength(20)]
-    public string Code { get; set; }
+    [ForeignKey("RoleId")]
+    public Guid? RoleId { get; set; }
+    public Role Role { get; set; }
   }
 }

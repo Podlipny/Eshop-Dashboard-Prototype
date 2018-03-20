@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Eshop.Dashboard.Data.Entities;
+using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Helpers;
 
 namespace Eshop.Dashboard.Services.Services
@@ -22,11 +22,20 @@ namespace Eshop.Dashboard.Services.Services
     //      {"Name", new PropertyMappingValue(new List<string>() {"FirstName", "LastName"})}
     //    };
 
-    private IEnumerable<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
+    private IList<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
+
+    Dictionary<string, PropertyMappingValue> productPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
+    {
+      { "Id", new PropertyMappingValue(new List<string>() {"Id"})},
+      {"Name", new PropertyMappingValue(new List<string>() {"Name"})},
+      {"Description", new PropertyMappingValue(new List<string>() {"Description"})},
+      {"Price", new PropertyMappingValue(new List<string>() {"Price"})},
+      {"Category", new PropertyMappingValue(new List<string>() {"Category.Name"})}
+    };
 
     public PropertyMappingService(IEnumerable<IPropertyMapping> propertyMappings)
     {
-      _propertyMappings = propertyMappings;
+      _propertyMappings.Add(new PropertyMapping<ProductDtoViewModel, Product>(productPropertyMapping));
     }
 
     public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()

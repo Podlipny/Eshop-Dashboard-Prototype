@@ -24,7 +24,7 @@ namespace Eshop.Dashboard.Data.Entities
     public string Dic { get; set; }
 
     [ForeignKey("ContactId")]
-    public Contact Contact { get; set; }
     public Guid? ContactId { get; set; }
+    public Contact Contact { get; set; }
   }
 }

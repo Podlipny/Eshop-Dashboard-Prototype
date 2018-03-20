@@ -17,13 +17,13 @@ namespace Eshop.Dashboard.Data.Entities
 
     [Required]
     [ForeignKey("CategoryId")]
-    public Category Category { get; set; }
     public Guid CategoryId { get; set; }
+    public Category Category { get; set; }
 
     [Required]
     [ForeignKey("VendorId")]
-    public Vendor Vendor { get; set; }
     public Guid VendorId { get; set; }
+    public Vendor Vendor { get; set; }
 
     [MaxLength(255)]
     public string ProductNumber { get; set; }
@@ -36,8 +36,8 @@ namespace Eshop.Dashboard.Data.Entities
 
     [Required]
     [ForeignKey("ProductStateId")]
-    public ProductState ProductState { get; set; }
     public Guid ProductStateId { get; set; }
+    public ProductState ProductState { get; set; }
 
     [Required]
     [MaxLength(2048)]
