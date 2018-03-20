@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Eshop.Dashboard.Data.Entities
 {
-  public class User
+  public class Customer
   {
     [Key]
     public Guid Id { get; set; }
@@ -25,14 +25,15 @@ namespace Eshop.Dashboard.Data.Entities
     [MaxLength(100)]
     public string Lastname { get; set; }
 
+    [StringLength(10)]
+    public int Ico { get; set; }
+
+    [StringLength(12)]
+    public string Dic { get; set; }
+
     [ForeignKey("ContactId")]
     public Contact Contact { get; set; }
     public Guid? ContactId { get; set; }
-
-    [Required]
-    [ForeignKey("UserRoleId")]
-    public UserRole UserRole { get; set; }
-    public Guid UserRoleId { get; set; }
-
   }
+
 }

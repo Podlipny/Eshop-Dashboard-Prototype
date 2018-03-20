@@ -62,7 +62,7 @@ namespace Eshop.Dashboard.Services.Services
         // remove everything after the first " " - if the fields 
         // are coming from an orderBy string, this part must be 
         // ignored
-        var indexOfFirstSpace = trimmedField.IndexOf(" ");
+        var indexOfFirstSpace = trimmedField.IndexOf(" ", StringComparison.Ordinal);
         var propertyName = indexOfFirstSpace == -1 ? trimmedField : trimmedField.Remove(indexOfFirstSpace);
 
         // find the matching property

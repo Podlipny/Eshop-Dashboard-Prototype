@@ -7,7 +7,11 @@ using Eshop.Dashboard.API.ViewModels.Products;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
+<<<<<<< HEAD
 using Eshop.Dashboard.Services.Helpers;
+=======
+using Eshop.Dashboard.Services.Dto;
+>>>>>>> 44f4c4b5e7a98efcafd045e0864b15d8cfbc88b3
 using Eshop.Dashboard.Services.Repositories;
 using Eshop.Dashboard.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

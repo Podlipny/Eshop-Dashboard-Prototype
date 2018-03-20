@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Eshop.Dashboard.Data.Migrations
 {
-    public partial class CategoryAdded : Migration
+    public partial class OrderProductStructAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -5,6 +5,7 @@ using Eshop.Dashboard.API.Enums;
 using Eshop.Dashboard.API.Helpers;
 using Eshop.Dashboard.API.ViewModels.Products;
 using Eshop.Dashboard.Data.Entities;
+using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Authorization;
