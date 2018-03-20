@@ -7,6 +7,9 @@ using Eshop.Dashboard.Services.Helpers;
 
 namespace Eshop.Dashboard.Services.Services
 {
+  /// <summary>
+  /// PropertyMappingService for coupling Dto property names to DB entity names
+  /// </summary>
   public class PropertyMappingService : IPropertyMappingService
   {
     // - definuje nam kolekci property objektu k mappingu
@@ -26,11 +29,11 @@ namespace Eshop.Dashboard.Services.Services
 
     Dictionary<string, PropertyMappingValue> productPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
     {
-      { "Id", new PropertyMappingValue(new List<string>() {"Id"})},
-      {"Name", new PropertyMappingValue(new List<string>() {"Name"})},
-      {"Description", new PropertyMappingValue(new List<string>() {"Description"})},
-      {"Price", new PropertyMappingValue(new List<string>() {"Price"})},
-      {"Category", new PropertyMappingValue(new List<string>() {"Category.Name"})}
+      { "Id", new PropertyMappingValue(new List<string>() {"Id"}) },
+      { "Name", new PropertyMappingValue(new List<string>() {"Name"}) },
+      { "Description", new PropertyMappingValue(new List<string>() {"Description"}) },
+      { "Price", new PropertyMappingValue(new List<string>() {"Price"}) },
+      { "Category", new PropertyMappingValue(new List<string>() {"Category.Name"}) }
     };
 
     public PropertyMappingService(IEnumerable<IPropertyMapping> propertyMappings)
