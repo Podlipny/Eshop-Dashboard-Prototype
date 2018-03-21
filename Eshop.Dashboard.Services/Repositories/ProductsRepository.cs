@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Helpers;
@@ -49,7 +48,7 @@ namespace Eshop.Dashboard.Services.Repositories
     /// </summary>
     /// <param name="productResourceParameters"></param>
     /// <returns></returns>
-    public PagedList<Product> GetProducts(ProductResourceParameters productResourceParameters)
+    public PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters)
     {
       IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category).ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDtoViewModel, Product>());
 
@@ -85,7 +84,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     public void Update(Product product)
     {
-      throw new NotImplementedException();
+      // no code in this implementation - only for readability
     }
   }
 

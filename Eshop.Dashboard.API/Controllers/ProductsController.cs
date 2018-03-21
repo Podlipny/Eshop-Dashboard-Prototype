@@ -25,30 +25,6 @@ namespace Eshop.Dashboard.API.Controllers
       _urlHelper = urlHelper;
     }
 
-    //[Authorize]
-    [HttpGet(Name = "GetProducts")]
-    public IActionResult Get(ProductResourceParameters productResourceParameters)
-    {
-      var productsFromRepo = _productsRepository.GetProducts(productResourceParameters);
-      var products = Mapper.Map<IEnumerable<ProductDtoViewModel>>(productsFromRepo);
-
-      var previousPageLink = productsFromRepo.HasPrevious ? CreateProductsResourceUri(productResourceParameters, ResourceUriType.PreviousPage) : null;
-
-      var nextPageLink = productsFromRepo.HasNext ? CreateProductsResourceUri(productResourceParameters, ResourceUriType.NextPage) : null;
-
-      var paginationMetadata = new
-      {
-        previousPageLink = previousPageLink,
-        nextPageLink = nextPageLink,
-        totalCount = productsFromRepo.TotalCount,
-        pageSize = productsFromRepo.PageSize,
-        currentPage = productsFromRepo.CurrentPage,
-        totalPages = productsFromRepo.TotalPages
-      };
-      Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
-      return Ok(products);
-    }
-
     [Authorize]
     [HttpGet("{id}", Name = "GetProduct")]
     public IActionResult Get(Guid id)
@@ -107,44 +83,5 @@ namespace Eshop.Dashboard.API.Controllers
 
       return NoContent();
     }
-
-    private string CreateProductsResourceUri(ProductResourceParameters productResourceParameters, ResourceUriType type)
-    {
-      switch (type)
-      {
-        case ResourceUriType.PreviousPage:
-          return _urlHelper.Link("GetProducts",
-            new
-            {
-              fields = productResourceParameters.Fields,
-              orderBy = productResourceParameters.OrderBy,
-              searchQuery = productResourceParameters.SearchQuery,
-              pageNumber = productResourceParameters.PageNumber - 1,
-              pageSize = productResourceParameters.PageSize
-            });
-        case ResourceUriType.NextPage:
-          return _urlHelper.Link("GetProducts",
-            new
-            {
-              fields = productResourceParameters.Fields,
-              orderBy = productResourceParameters.OrderBy,
-              searchQuery = productResourceParameters.SearchQuery,
-              pageNumber = productResourceParameters.PageNumber + 1,
-              pageSize = productResourceParameters.PageSize
-            });
-        case ResourceUriType.Current:
-        default:
-          return _urlHelper.Link("GetProducts",
-            new
-            {
-              fields = productResourceParameters.Fields,
-              orderBy = productResourceParameters.OrderBy,
-              searchQuery = productResourceParameters.SearchQuery,
-              pageNumber = productResourceParameters.PageNumber,
-              pageSize = productResourceParameters.PageSize
-            });
-      }
-    }
-
   }
 }

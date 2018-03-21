@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Eshop.Dashboard.API.ViewModels;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
@@ -78,6 +79,7 @@ namespace Eshop.Dashboard.API
       services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
       services.AddScoped<IUsersRepository, UsersRepository>();
       services.AddScoped<IProductsRepository, ProductsRepository>();
+      services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
       services.AddMemoryCache();
 
@@ -132,8 +134,11 @@ namespace Eshop.Dashboard.API
       {
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDtoViewModel>();
-        cfg.CreateMap<Product, Services.Dto.ProductDtoViewModel>()
+        cfg.CreateMap<Product, ProductDtoViewModel>()
           .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+        cfg.CreateMap<Category, CategoryDto>();
+        cfg.CreateMap<Category, CategoryToCreateViewModel>();
+
       });
 
       app.UseCors("AllowAll");

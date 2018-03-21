@@ -1,9 +1,9 @@
 ﻿namespace Eshop.Dashboard.Services.Helpers
 {
   /// <summary>
-  /// Product resource definition for retrieving products
+  /// Collection resource definition for retrieving items
   /// </summary>
-  public class ProductResourceParameters
+  public class CollectionResourceParameters
   {
     const int MaxPageSize = 100;
 
@@ -18,7 +18,7 @@
 
     public string SearchQuery { get; set; }
 
-    public string OrderBy { get; set; } = "Name";
+    public string OrderBy { get; set; }
 
     public string Fields { get; set; }
   }
