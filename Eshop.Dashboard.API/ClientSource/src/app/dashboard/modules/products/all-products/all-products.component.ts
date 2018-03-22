@@ -4,11 +4,12 @@ import { IPageChangeEvent } from '@covalent/core/paging';
 import { ProductService } from '../../../services/product.service';
 import { IProduct } from '../../../../model/IProduct';
 import { ToastService } from '../../../../core/toast/toast.service';
+import { HttpResponse } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 
 const DECIMAL_FORMAT: (v: any) => any = (v: number) => v.toFixed(2);
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
   styleUrls: ['./all-products.component.scss']
@@ -20,7 +21,7 @@ export class AllProductsComponent implements OnInit {
     { name: 'price', label: 'Price', numeric: true, sortable: true, format: DECIMAL_FORMAT },
   ];
 
-  productData: IProduct[] = [];
+  productData = [];
 
   filteredData: any[] = this.productData;
   filteredTotal: number = this.productData.length;
@@ -38,16 +39,7 @@ export class AllProductsComponent implements OnInit {
               private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this._productService.loalAllProducts().subscribe(data => {
-      this.productData = data;
-      this.filter();
-      // we are manually telling change detection strategy to change changes, because
-      // AllProductsComponent works with empty product array[], but before rendering window, we
-      // will load data
-      this.cdr.detectChanges();
-    }, error => {
-      console.log(error.error);
-    });
+    this.filter();
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
@@ -74,19 +66,18 @@ export class AllProductsComponent implements OnInit {
   }
 
   filter(): void {
-    let newData: any[] = this.productData;
-    const excludedColumns: string[] = this.columns
-    .filter((column: ITdDataTableColumn) => {
-      return ((column.filter === undefined && column.hidden === true) ||
-              (column.filter !== undefined && column.filter === false));
-    }).map((column: ITdDataTableColumn) => {
-      return column.name;
+    this._productService.loalProducts(this.sortBy, this.currentPage, this.pageSize, this.searchTerm, this.sortOrder.toLowerCase())
+    .subscribe((res: HttpResponse<IProduct[]>) => {
+      this.productData = res.body;
+      this.filteredData = res.body;
+
+      // we have to set x-pagination to COSR rules on API server
+      const xPagination = res.headers.get('x-pagination');
+      this.filteredTotal = JSON.parse(xPagination).totalCount;
+
+    }, error => {
+      console.log(error.error);
     });
-    newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
-    this.filteredTotal = newData.length;
-    newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
-    newData = this._dataTableService.pageData(newData, this.fromRow, this.currentPage * this.pageSize);
-    this.filteredData = newData;
   }
 
 }

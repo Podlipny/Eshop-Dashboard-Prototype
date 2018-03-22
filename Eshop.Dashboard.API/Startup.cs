@@ -151,7 +151,10 @@ namespace Eshop.Dashboard.API
 
       });
 
-      app.UseCors("AllowAll");
+      app.UseCors(x => x.WithExposedHeaders("X-Pagination")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin()); // ("AllowAll");
 
       app.UseAuthentication();
 

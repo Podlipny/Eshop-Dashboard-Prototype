@@ -36,7 +36,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     public PagedList<User> GetUsers(CollectionResourceParameters userResourceParameters)
     {
-      IQueryable<User> collectionBeforePaging = _context.Users//.Include(x => x.Contact)
+      IQueryable<User> collectionBeforePaging = _context.Users.Include(x => x.Contact)
         .ApplySort(userResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<UserDtoViewModel, User>());
 
       if (!string.IsNullOrEmpty(userResourceParameters.SearchQuery))
@@ -47,12 +47,12 @@ namespace Eshop.Dashboard.Services.Repositories
         collectionBeforePaging = collectionBeforePaging.Where(a => a.Username.ToLowerInvariant().Contains(searchQueryForWhereClause)
                                                                    || a.Firstname.ToLowerInvariant().Contains(searchQueryForWhereClause)
                                                                    || a.Lastname.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                                                                   || a.Email.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                                                                   || a.Contact.Address1.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                                                                   || a.Contact.Address2.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                                                                   || a.Contact.City.ToLowerInvariant().Contains(searchQueryForWhereClause)
-                                                                   || a.Contact.Psc.ToString().ToLowerInvariant().Contains(searchQueryForWhereClause)
-                                                                   || a.Contact.State.ToLowerInvariant().Contains(searchQueryForWhereClause));
+                                                                   || a.Email.ToLowerInvariant().Contains(searchQueryForWhereClause))
+                                                        .Where(c => c.Contact != null && (c.Contact.Address1.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || c.Contact.Address2.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || c.Contact.City.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || c.Contact.Psc.ToString().ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || c.Contact.State.ToLowerInvariant().Contains(searchQueryForWhereClause)));
       }
       return PagedList<User>.Create(collectionBeforePaging, userResourceParameters.PageNumber, userResourceParameters.PageSize);
     }
