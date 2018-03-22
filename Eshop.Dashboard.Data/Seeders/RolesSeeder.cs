@@ -9,6 +9,7 @@ namespace Eshop.Dashboard.Data.Seeders
     public static void Seed(EshopDbContext context)
     {
       context.Roles.RemoveRange(context.Roles);
+      context.UserRoles.RemoveRange(context.UserRoles);
       context.SaveChanges();
 
       var roles = new List<Role>();
@@ -43,5 +44,18 @@ namespace Eshop.Dashboard.Data.Seeders
       context.Roles.AddRange(roles);
       context.SaveChanges();
     }
+
+    public static void MapUserRole(EshopDbContext context, Guid userId, Guid roleId)
+    {
+      var userRole = new UserRole()
+      {
+        Id = Guid.NewGuid(),
+        UserId = userId,
+        RoleId = roleId
+      };
+
+      context.UserRoles.Add(userRole);
+    }
+
   }
 }

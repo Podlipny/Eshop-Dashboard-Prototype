@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Eshop.Dashboard.Services.Dto;
+using Eshop.Dashboard.Services.Helpers;
+using Eshop.Dashboard.Services.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Eshop.Dashboard.Services.Repositories
@@ -11,11 +15,13 @@ namespace Eshop.Dashboard.Services.Repositories
   public class UsersRepository : BaseRepository, IUsersRepository
   {
     private IConfiguration _configuration;
+    private IPropertyMappingService _propertyMappingService;
 
-    public UsersRepository(EshopDbContext context, IConfiguration configuration)
+    public UsersRepository(EshopDbContext context, IConfiguration configuration, IPropertyMappingService propertyMappingService)
       : base(context)
     {
       _configuration = configuration;
+      _propertyMappingService = propertyMappingService;
     }
 
     public User GetUser(Guid userId)
@@ -28,10 +34,27 @@ namespace Eshop.Dashboard.Services.Repositories
       return _context.Users.FirstOrDefault(a => a.Username == username);
     }
 
-    public IEnumerable<User> GetUsers()
+    public PagedList<User> GetUsers(CollectionResourceParameters userResourceParameters)
     {
-      //TODO: add parametre search
-      return _context.Users.ToList();
+      IQueryable<User> collectionBeforePaging = _context.Users//.Include(x => x.Contact)
+        .ApplySort(userResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<UserDtoViewModel, User>());
+
+      if (!string.IsNullOrEmpty(userResourceParameters.SearchQuery))
+      {
+        // trim & ignore casing
+        var searchQueryForWhereClause = userResourceParameters.SearchQuery.Trim().ToLowerInvariant();
+
+        collectionBeforePaging = collectionBeforePaging.Where(a => a.Username.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Firstname.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Lastname.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Email.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Contact.Address1.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Contact.Address2.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Contact.City.ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Contact.Psc.ToString().ToLowerInvariant().Contains(searchQueryForWhereClause)
+                                                                   || a.Contact.State.ToLowerInvariant().Contains(searchQueryForWhereClause));
+      }
+      return PagedList<User>.Create(collectionBeforePaging, userResourceParameters.PageNumber, userResourceParameters.PageSize);
     }
 
     public bool UserExists(Guid userId)

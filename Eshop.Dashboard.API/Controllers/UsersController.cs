@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Net;
 using AutoMapper;
+using Eshop.Dashboard.API.Enums;
 using Eshop.Dashboard.API.Helpers;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Dto;
+using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,20 +18,36 @@ namespace Eshop.Dashboard.API.Controllers
   public class UsersController : Controller
   {
     private IUsersRepository _userRepository { get; }
+    private IUrlHelper _urlHelper;
 
-    public UsersController(IUsersRepository userRepository)
+    public UsersController(IUsersRepository userRepository, IUrlHelper urlHelper)
     {
       _userRepository = userRepository;
+      _urlHelper = urlHelper;
     }
 
     [Authorize]
     [HttpGet(Name = "GetUsers")]
-    public IActionResult Get()
+    public IActionResult Get(CollectionResourceParameters userResourceParameters)
     {
-      var usersEntities = _userRepository.GetUsers();
-      var usersToReturn = Mapper.Map<IEnumerable<UserDtoViewModel>>(usersEntities);
-      
-      return Ok(usersToReturn);
+      var usersFromRepo = _userRepository.GetUsers(userResourceParameters);
+      var users = Mapper.Map<IEnumerable<UserDtoViewModel>>(usersFromRepo);
+
+      var previousPageLink = usersFromRepo.HasPrevious ? CreateUsersResourceUri(userResourceParameters, ResourceUriType.PreviousPage) : null;
+
+      var nextPageLink = usersFromRepo.HasNext ? CreateUsersResourceUri(userResourceParameters, ResourceUriType.NextPage) : null;
+
+      var paginationMetadata = new
+      {
+        previousPageLink = previousPageLink,
+        nextPageLink = nextPageLink,
+        totalCount = usersFromRepo.TotalCount,
+        pageSize = usersFromRepo.PageSize,
+        currentPage = usersFromRepo.CurrentPage,
+        totalPages = usersFromRepo.TotalPages
+      };
+      Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+      return Ok(users);
     }
 
     [Authorize]
@@ -97,6 +115,46 @@ namespace Eshop.Dashboard.API.Controllers
 
       return NoContent();
     }
+
+    //TODO: move this to base class
+    private string CreateUsersResourceUri(CollectionResourceParameters usersResourceParameters, ResourceUriType type)
+    {
+      switch (type)
+      {
+        case ResourceUriType.PreviousPage:
+          return _urlHelper.Link("GetUsers",
+            new
+            {
+              fields = usersResourceParameters.Fields,
+              orderBy = usersResourceParameters.OrderBy,
+              searchQuery = usersResourceParameters.SearchQuery,
+              pageNumber = usersResourceParameters.PageNumber - 1,
+              pageSize = usersResourceParameters.PageSize
+            });
+        case ResourceUriType.NextPage:
+          return _urlHelper.Link("GetUsers",
+            new
+            {
+              fields = usersResourceParameters.Fields,
+              orderBy = usersResourceParameters.OrderBy,
+              searchQuery = usersResourceParameters.SearchQuery,
+              pageNumber = usersResourceParameters.PageNumber + 1,
+              pageSize = usersResourceParameters.PageSize
+            });
+        case ResourceUriType.Current:
+        default:
+          return _urlHelper.Link("GetUsers",
+            new
+            {
+              fields = usersResourceParameters.Fields,
+              orderBy = usersResourceParameters.OrderBy,
+              searchQuery = usersResourceParameters.SearchQuery,
+              pageNumber = usersResourceParameters.PageNumber,
+              pageSize = usersResourceParameters.PageSize
+            });
+      }
+    }
+
 
   }
 }

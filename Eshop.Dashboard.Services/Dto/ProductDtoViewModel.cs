@@ -10,7 +10,15 @@ namespace Eshop.Dashboard.Services.Dto
 
     public string Description { get; set; }
 
-    public string Category { get; set; }
+    public Guid CategoryId { get; set; }
+
+    public string CategoryName { get; set; }
+
+    public string State { get; set; }
+
+    public Guid VendorId { get; set; }
+
+    public string VendorName { get; set; }
 
     public double Price { get; set; }
   }

@@ -133,9 +133,19 @@ namespace Eshop.Dashboard.API
       AutoMapper.Mapper.Initialize(cfg =>
       {
         cfg.CreateMap<RegisterViewModel, User>();
-        cfg.CreateMap<User, UserDtoViewModel>();
+        cfg.CreateMap<User, UserDtoViewModel>()
+          .ForMember(dest => dest.Telephone, opt => opt.MapFrom(src => src.Contact.Telephone))
+          .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Contact.Address1))
+          .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Contact.Address2))
+          .ForMember(dest => dest.Psc, opt => opt.MapFrom(src => src.Contact.Psc))
+          .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Contact.City))
+          .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Contact.State));
         cfg.CreateMap<Product, ProductDtoViewModel>()
-          .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+          .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.Id))
+          .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+          .ForMember(dest => dest.VendorId, opt => opt.MapFrom(src => src.Vendor.Id))
+          .ForMember(dest => dest.VendorName, opt => opt.MapFrom(src => src.Vendor.Name))
+          .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.ProductState.Name));
         cfg.CreateMap<Category, CategoryDto>();
         cfg.CreateMap<Category, CategoryToCreateViewModel>();
 

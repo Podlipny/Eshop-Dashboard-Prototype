@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Eshop.Dashboard.Services.Helpers;
 
 namespace Eshop.Dashboard.Services.Repositories
 {
@@ -11,7 +12,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     User FindByName(string username);
 
-    IEnumerable<User> GetUsers();
+    PagedList<User> GetUsers(CollectionResourceParameters productResourceParameters);
 
     bool UserExists(Guid userId);
 
