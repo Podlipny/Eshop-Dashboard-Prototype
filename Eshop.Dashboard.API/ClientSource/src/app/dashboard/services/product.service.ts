@@ -13,9 +13,7 @@ export class ProductService {
 
   constructor(private _userservice: UserService, private http: HttpClient) { }
 
-  loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest')
-  : Observable<HttpResponse<IProduct[]>> {
-
+  loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest'): Observable<HttpResponse<IProduct[]>> {
     let productsEndpoint = 'products?';
 
     if (orderBy) {
@@ -24,7 +22,7 @@ export class ProductService {
     productsEndpoint += '&pageNumber=' + pageNumber + '&pageSize=' + pageSize;
 
     if (searchQuery) {
-      productsEndpoint += '&searchQuery=' + orderBy;
+      productsEndpoint += '&searchQuery=' + searchQuery;
     }
     return this.http.get<IProduct[]>(environment.apiUrl + productsEndpoint, { headers: HttpHelper.getHeadres(), observe: 'response' });
   }

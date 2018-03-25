@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { AllProductsComponent } from './all-products/all-products.component';
+import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductsRoutingModule } from './products.routing';
 import { SharedModule } from '../../../shared/shared.module';
 import { ProductsComponent } from './products/products.component';
@@ -16,7 +16,7 @@ import { MaterialModule } from '../../../shared/material.module';
   ],
   declarations: [
     ProductsComponent,
-    AllProductsComponent
+    ProductsListComponent
   ]
 })
 export class ProductsModule { }

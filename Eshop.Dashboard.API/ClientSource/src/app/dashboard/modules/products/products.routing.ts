@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ProductsComponent } from './products/products.component';
-import { AllProductsComponent } from './all-products/all-products.component';
+import { ProductsListComponent } from './products-list/products-list.component';
 
 export const productsRoutes: Routes = [
   { path: '', component: ProductsComponent,
     children: [
-      { path: 'all', component: AllProductsComponent }
+      { path: 'all', component: ProductsListComponent }
     ]
   },
 ];

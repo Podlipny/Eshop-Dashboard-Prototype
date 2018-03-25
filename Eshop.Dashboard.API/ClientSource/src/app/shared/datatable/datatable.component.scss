@@ -1,0 +1,41 @@
+.table-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.table-scroll-wrap {
+  flex: 1;
+  flex-basis: auto; // this will allows us use min with with flex
+  min-width: 400px;
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space: nowrap;
+  margin: 0px 10px 0px 10px;
+}
+
+.action-table {
+  flex: 0;
+}
+
+.action-table th {
+  margin: 0px;
+  height: 50px;
+}
+.action-table tr {
+  height: 48px;
+}
+
+.content-table {
+  width: 100%;
+  display: table;
+  overflow-y: auto;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.no-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
