@@ -153,8 +153,8 @@ export class ProductsListComponent implements OnInit {
     this.load(loadVar);
   }
 
-  showAlert() {
-    console.log('alert');
+  showAlert(message: string) {
+    console.log(message);
   }
 
   load(loadParams: IDatatableLoadEvent): void {

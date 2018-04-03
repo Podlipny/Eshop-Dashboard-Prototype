@@ -51,7 +51,6 @@
     {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
   </td-paging-bar>
    -->
-      <!-- <button mat-button color="primary" color="primary">{{ row }}}</button> -->
 
   <app-datatable
     #dataTable
@@ -63,23 +62,17 @@
     [clickable]="true"
     [multiple]="true"
     [sortable]="true"
+    [actionsVisible]="true"
     (loadEvent)="load($event)"
-    (rowClick)="showAlert($event)"
-    [style.height.px]="560"
-    [style.minheight.px]="100">  
+    (rowClick)="showAlert($event)">  
     <ng-template let-row>
-      <button mat-button color="primary" (click)="showAlert('text')" color="primary">{{row.name}}</button>
+      <button mat-icon-button (click)="showAlert(row.name)" >
+        <mat-icon class="size-18 tc-grey-600" aria-label="Edit product">edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="showAlert(row.name)" >
+        <mat-icon class="size-18 tc-red-400" aria-label="Delete product">delete</mat-icon>
+      </button>
     </ng-template>
-  
-    <!-- <ng-template tdDataTableTemplate="description" let-value="value" let-row="row" let-column="column">
-        <p matTooltip="">zadek</p>
-      </ng-template>
-      <ng-template tdDataTableTemplate="vendorName" let-value="value">
-        <p matTooltip="{{ value }}">{{ value }}</p>
-      </ng-template>
-      <ng-template tdDataTableTemplate="buttons" let-value="value">
-        <button mat-button color="primary" color="primary">text</button>
-      </ng-template> -->
   </app-datatable>
 </mat-card>
 

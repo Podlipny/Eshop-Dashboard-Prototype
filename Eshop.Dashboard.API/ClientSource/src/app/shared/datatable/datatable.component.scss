@@ -1,7 +1,16 @@
+.content-table {
+  width: 100%;
+  display: table;
+  overflow-y: auto;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 .table-wrap {
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  margin: 0px 10px 0px 10px;
 }
 
 .table-scroll-wrap {
@@ -11,27 +20,45 @@
   overflow-x: auto;
   overflow-y: auto;
   white-space: nowrap;
-  margin: 0px 10px 0px 10px;
 }
 
+//----------------------------------------
+// ACTION COLUMN STYLE
+//----------------------------------------
 .action-table {
   flex: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  border-collapse: collapse;
 }
 
 .action-table th {
+  vertical-align: middle;
+  text-align: left;
+  padding: 0px 0px 0px 28px;
   margin: 0px;
-  height: 50px;
-}
-.action-table tr {
-  height: 48px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.54);
+  height: 49px;
 }
 
-.content-table {
-  width: 100%;
-  display: table;
-  overflow-y: auto;
-  overflow-x: auto;
-  white-space: nowrap;
+.action-table tr {
+  height: 49px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.action-table .mat-icon-button {
+  font-size: 10px;
+  height: 10px;
+  width: 10px;
+  line-height: 10px;
 }
 
 .no-overflow {

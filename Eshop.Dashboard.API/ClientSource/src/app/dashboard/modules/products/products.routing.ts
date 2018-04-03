@@ -7,7 +7,7 @@ import { ProductsListComponent } from './products-list/products-list.component';
 export const productsRoutes: Routes = [
   { path: '', component: ProductsComponent,
     children: [
-      { path: 'all', component: ProductsListComponent }
+      { path: '', component: ProductsListComponent }
     ]
   },
 ];

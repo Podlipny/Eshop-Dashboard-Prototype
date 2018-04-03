@@ -39,12 +39,17 @@ export class DatatableComponent implements OnInit, AfterViewInit {
   @Input() loading: boolean = false;
   @Input() data: any[] = [];
   @Input() totalCount: number = 0;
-  @Input() columns: ITdDataTableColumn[] = [];
+  @Input() columns: IDataTableColumn[] = [];
 
   @Input() sortable: boolean = false;
   @Input() selectable: boolean = false;
   @Input() clickable: boolean = false;
   @Input() multiple: boolean = false;
+
+  // style inputs
+  @Input() minHeight: number = 250;
+  @Input() actionsVisible: boolean = false;
+  @Input() actionsWidth: number = 90;
 
   @Output() loadEvent: EventEmitter<IDatatableLoadEvent> = new EventEmitter();
   @Output() rowClickEvent: EventEmitter<any> = new EventEmitter();
