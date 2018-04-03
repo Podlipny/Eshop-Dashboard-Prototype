@@ -50,7 +50,9 @@ namespace Eshop.Dashboard.Services.Repositories
     /// <returns></returns>
     public PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters)
     {
-      IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category).Include(x => x.ProductState).Include(x => x.Vendor).ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDtoViewModel, Product>());
+      IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category)
+        .Include(x => x.ProductState).Include(x => x.Vendor)
+        .ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDtoViewModel, Product>());
 
       if (!string.IsNullOrEmpty(productResourceParameters.SearchQuery))
       {

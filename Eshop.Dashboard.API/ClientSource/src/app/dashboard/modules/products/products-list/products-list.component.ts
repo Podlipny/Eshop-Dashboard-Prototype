@@ -95,7 +95,7 @@ import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit, ChangeDetect
 import { TdDataTableService, TdDataTableSortingOrder, ITdDataTableSortChangeEvent } from '@covalent/core/data-table';
 import { IPageChangeEvent } from '@covalent/core/paging';
 import { ProductService } from '../../../services/product.service';
-import { IProduct } from '../../../../model/IProduct';
+import { IProduct } from '../../../../model/product';
 import { ToastService } from '../../../../core/toast/toast.service';
 import { HttpResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map';
@@ -158,7 +158,22 @@ export class ProductsListComponent implements OnInit {
   }
 
   load(loadParams: IDatatableLoadEvent): void {
-    this._productService.loalProducts(loadParams.sortBy, loadParams.currentPage, loadParams.pageSize, loadParams.searchTerm, loadParams.sortOrder.toLowerCase());
+    this.loading = true;
+    this._productService.loalProducts(loadParams.sortBy, loadParams.currentPage, loadParams.pageSize, loadParams.searchTerm, loadParams.sortOrder.toLowerCase())
+    .subscribe((res: HttpResponse<IProduct[]>) => {
+      this.filteredData = res.body;
+
+      // we have to set x-pagination to COSR rules on API server
+      const xPagination = res.headers.get('x-pagination');
+      this.filteredTotal = JSON.parse(xPagination).totalCount;
+
+      this.loading = false;
+      // Hack - because we are setting loading and until data are loaded
+      // we have to stop changeDetection and tell angular when to detect changes
+      // - this happens only when we are changing pagesize
+    }, error => {
+      console.log(error.error);
+    });
   }
 
 }

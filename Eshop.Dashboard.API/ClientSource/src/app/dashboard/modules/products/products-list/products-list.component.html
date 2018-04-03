@@ -55,10 +55,10 @@
 
   <app-datatable
     #dataTable
-    [loading]="_productService.loading"
-    [data]="_productService.products"
+    [loading]="loading"
+    [data]="filteredData"
     [columns]="columns"
-    [totalCount]="_productService.totalCount"
+    [totalCount]="filteredTotal"
     [selectable]="true"
     [clickable]="true"
     [multiple]="true"

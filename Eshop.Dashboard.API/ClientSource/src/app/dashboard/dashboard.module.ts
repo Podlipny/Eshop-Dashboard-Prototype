@@ -11,6 +11,9 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { ProductService } from './services/product.service';
+import { MenuComponent } from './menu/menu.component';
+import { MenuItemComponent } from './menu-item/menu-item.component';
+import { MenuService } from './services/menu.service';
 
 
 @NgModule({
@@ -22,8 +25,10 @@ import { ProductService } from './services/product.service';
   declarations: [
     ToolbarComponent,
     DashboardComponent,
-    BoardViewComponent
+    BoardViewComponent,
+    MenuComponent,
+    MenuItemComponent
   ],
-  providers: [ ProductService ]
+  providers: [ ProductService, MenuService ]
 })
 export class DashboardModule { }

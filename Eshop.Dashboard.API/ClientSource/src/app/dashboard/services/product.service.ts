@@ -16,7 +16,7 @@ export class ProductService {
 
   constructor(private _userservice: UserService, private http: HttpClient) { }
 
-  loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest') {
+  loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest'): Observable<HttpResponse<IProduct[]>> {
     this.loading = true;
     let productsEndpoint = 'products?';
 
@@ -28,20 +28,6 @@ export class ProductService {
     if (searchQuery) {
       productsEndpoint += '&searchQuery=' + searchQuery;
     }
-    this.http.get<IProduct[]>(environment.apiUrl + productsEndpoint, { headers: HttpHelper.getHeadres(), observe: 'response' })
-      .subscribe((res: HttpResponse<IProduct[]>) => {
-        this.products = res.body;
-
-        // we have to set x-pagination to COSR rules on API server
-        const xPagination = res.headers.get('x-pagination');
-        this.totalCount = JSON.parse(xPagination).totalCount;
-
-        this.loading = false;
-        // Hack - because we are setting loading and until data are loaded
-        // we have to stop changeDetection and tell angular when to detect changes
-        // - this happens only when we are changing pagesize
-      }, error => {
-        console.log(error.error);
-      });
+    return this.http.get<IProduct[]>(environment.apiUrl + productsEndpoint, { headers: HttpHelper.getHeadres(), observe: 'response' });
   }
 }

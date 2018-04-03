@@ -47,6 +47,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
+  font-feature-settings: 'liga';
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
@@ -63,4 +64,8 @@ mat-icon.size-16 {
 
 mat-icon.size-18 {
   font-size: 18px;
+}
+
+mat-icon.size-20 {
+  font-size: 20px;
 }
