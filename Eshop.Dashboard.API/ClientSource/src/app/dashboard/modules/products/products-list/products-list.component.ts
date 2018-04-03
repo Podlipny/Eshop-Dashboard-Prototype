@@ -158,23 +158,7 @@ export class ProductsListComponent implements OnInit {
   }
 
   load(loadParams: IDatatableLoadEvent): void {
-    this.loading = true;
-    this._productService.loalProducts(loadParams.sortBy, loadParams.currentPage, loadParams.pageSize, loadParams.searchTerm, loadParams.sortOrder.toLowerCase())
-    .subscribe((res: HttpResponse<IProduct[]>) => {
-      this.filteredData = res.body;
-
-      // we have to set x-pagination to COSR rules on API server
-      const xPagination = res.headers.get('x-pagination');
-      this.filteredTotal = JSON.parse(xPagination).totalCount;
-
-      this.loading = false;
-      // Hack - because we are setting loading and until data are loaded
-      // we have to stop changeDetection and tell angular when to detect changes
-      // - this happens only when we are changing pagesize
-      this._cdr.detectChanges();
-    }, error => {
-      console.log(error.error);
-    });
+    this._productService.loalProducts(loadParams.sortBy, loadParams.currentPage, loadParams.pageSize, loadParams.searchTerm, loadParams.sortOrder.toLowerCase());
   }
 
 }
