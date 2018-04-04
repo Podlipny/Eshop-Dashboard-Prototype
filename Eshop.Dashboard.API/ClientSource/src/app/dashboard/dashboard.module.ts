@@ -14,6 +14,7 @@ import { ProductService } from './services/product.service';
 import { MenuComponent } from './menu/menu.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import { MenuService } from './services/menu.service';
+import { MenuExpanderComponent } from './menu-expander/menu-expander.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { MenuService } from './services/menu.service';
     DashboardComponent,
     BoardViewComponent,
     MenuComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    MenuExpanderComponent
   ],
   providers: [ ProductService, MenuService ]
 })

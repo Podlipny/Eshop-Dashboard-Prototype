@@ -6,7 +6,6 @@ import { CovalentModule } from './covalent.module';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { SideNavComponent } from './sidenav/sidenav.component';
 import { DatatableComponent } from './datatable/datatable.component';
 
 @NgModule({
@@ -20,9 +19,8 @@ import { DatatableComponent } from './datatable/datatable.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SideNavComponent,
     DatatableComponent
   ],
-  declarations: [SideNavComponent, DatatableComponent]
+  declarations: [ DatatableComponent ]
 })
 export class SharedModule { }

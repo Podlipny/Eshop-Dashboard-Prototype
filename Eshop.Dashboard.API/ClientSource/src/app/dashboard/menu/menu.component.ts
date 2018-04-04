@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { MenuService } from '../services/menu.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,7 +7,7 @@ import { MenuService } from '../services/menu.service';
 })
 export class MenuComponent implements OnInit {
 
-  constructor(private router: Router, public menuService: MenuService) { }
+  constructor() { }
 
   ngOnInit() {
   }

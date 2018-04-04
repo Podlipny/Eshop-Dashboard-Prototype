@@ -10,14 +10,10 @@ import { SortOrderEnum } from '../../Enums/SortOrderEnum';
 
 @Injectable()
 export class ProductService {
-  products: IProduct[] = [];
-  totalCount: number = this.products.length;
-  loading: boolean = false;
 
   constructor(private _userservice: UserService, private http: HttpClient) { }
 
   loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest'): Observable<HttpResponse<IProduct[]>> {
-    this.loading = true;
     let productsEndpoint = 'products?';
 
     if (orderBy) {
