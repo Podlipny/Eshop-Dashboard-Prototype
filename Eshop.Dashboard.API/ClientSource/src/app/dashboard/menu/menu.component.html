@@ -1,5 +1,8 @@
 <nav>
   <mat-nav-list class="menu-list">
-    
+    <app-menu-item *ngFor="let item of menuService.items"
+                   [isParentItem]="true"
+                   [item]="item"> 
+    </app-menu-item>
   </mat-nav-list>
 </nav>

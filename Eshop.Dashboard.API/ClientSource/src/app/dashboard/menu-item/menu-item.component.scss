@@ -1,0 +1,22 @@
+mat-list-item a {
+  width: 100%;
+  display: flex;
+  line-height: 1.5;
+  flex-direction: row;
+  align-content: unset;
+  justify-content: space-between;
+}
+
+mat-list-item .mat-icon {
+  flex: 0;
+  line-height: 1.2;
+  margin: 0px 15px 0px 0px;
+}
+
+mat-list-item span {
+  flex: 1;
+}
+
+.router-link-active {
+  background-color: #ddd;
+}

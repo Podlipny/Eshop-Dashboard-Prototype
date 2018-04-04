@@ -10,7 +10,7 @@ export let dashboardMenuItems: Array<MenuItem> = [
     {
         label: 'Products',
         icon: 'shopping_cart',
-        route: 'products',
+        route: null,
         submenu: [
             {
                 label: 'All products',
@@ -19,9 +19,15 @@ export let dashboardMenuItems: Array<MenuItem> = [
                 submenu: null
             },
             {
-                label: 'add new product',
+                label: 'Add new product',
                 icon: null,
-                route: null,
+                route: 'products/add',
+                submenu: null
+            },
+            {
+                label: 'Categories',
+                icon: null,
+                route: 'products/categories',
                 submenu: null
             }
         ],
@@ -29,8 +35,21 @@ export let dashboardMenuItems: Array<MenuItem> = [
     {
         label: 'Customers',
         icon: 'assignment_ind',
-        route: 'customers',
-        submenu: null
+        route: null,
+        submenu: [
+            {
+                label: 'All customers',
+                icon: null,
+                route: 'customers',
+                submenu: null
+            },
+            {
+                label: 'Add new customer',
+                icon: null,
+                route: 'customers/add',
+                submenu: null
+            }
+        ],
     },
     {
         label: 'Settings',

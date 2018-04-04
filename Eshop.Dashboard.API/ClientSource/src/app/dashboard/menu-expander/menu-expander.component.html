@@ -1,3 +1,5 @@
-<p>
-  menu-expanded works!
-</p>
+<app-menu-item *ngFor="let item of menu" 
+              [item]="item" 
+              class="in-popup"> 
+              <!-- in-popup not used -->
+</app-menu-item>
