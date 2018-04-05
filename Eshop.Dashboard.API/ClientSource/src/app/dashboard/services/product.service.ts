@@ -10,20 +10,25 @@ import { SortOrderEnum } from '../../Enums/SortOrderEnum';
 
 @Injectable()
 export class ProductService {
+  productsEndpoint: string = 'products';
 
   constructor(private _userservice: UserService, private http: HttpClient) { }
 
+  getProduct(id: string): Observable<IProduct> {
+    return this.http.get<IProduct>(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeadres() });
+  }
+
   loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest'): Observable<HttpResponse<IProduct[]>> {
-    let productsEndpoint = 'products?';
+    let query = this.productsEndpoint + '?';
 
     if (orderBy) {
-      productsEndpoint += 'orderBy=' + orderBy + ' ' + sortOrder;
+      query += 'orderBy=' + orderBy + ' ' + sortOrder;
     }
-    productsEndpoint += '&pageNumber=' + pageNumber + '&pageSize=' + pageSize;
+    query += '&pageNumber=' + pageNumber + '&pageSize=' + pageSize;
 
     if (searchQuery) {
-      productsEndpoint += '&searchQuery=' + searchQuery;
+      query += '&searchQuery=' + searchQuery;
     }
-    return this.http.get<IProduct[]>(environment.apiUrl + productsEndpoint, { headers: HttpHelper.getHeadres(), observe: 'response' });
+    return this.http.get<IProduct[]>(environment.apiUrl + query, { headers: HttpHelper.getHeadres(), observe: 'response' });
   }
 }

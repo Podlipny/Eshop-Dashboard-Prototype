@@ -1,8 +1,8 @@
-<mat-list-item [style.height.px]="isParentItem ? 48 : 30" [ngClass]="{ 'router-link-active': isActiveRoute }">
+<mat-list-item [style.height.px]="isParentItem ? 48 : 30" [ngClass]="{'child-item': !isParentItem, 'router-link-active': isActiveRoute }">
   <a>
     <mat-icon class="size-20">{{ item.icon }}</mat-icon>
     
-    <span>{{ item.label }}</span>
+    <p>{{ item.label }}</p>
     
     <mat-icon *ngIf="item.submenu && !popupOpened" class="size-20">keyboard_arrow_right</mat-icon>
     <mat-icon *ngIf="item.submenu && popupOpened" class="size-20">keyboard_arrow_down</mat-icon>

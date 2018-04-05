@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 
-import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductsRoutingModule } from './products.routing';
 import { SharedModule } from '../../../shared/shared.module';
-import { ProductsComponent } from './products/products.component';
 import { CovalentModule } from '../../../shared/covalent.module';
 import { MaterialModule } from '../../../shared/material.module';
+
+import { ProductsComponent } from './products/products.component';
+import { ProductsListComponent } from './products-list/products-list.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 @NgModule({
   imports: [
@@ -16,7 +18,8 @@ import { MaterialModule } from '../../../shared/material.module';
   ],
   declarations: [
     ProductsComponent,
-    ProductsListComponent
+    ProductsListComponent,
+    ProductDetailComponent
   ]
 })
 export class ProductsModule { }

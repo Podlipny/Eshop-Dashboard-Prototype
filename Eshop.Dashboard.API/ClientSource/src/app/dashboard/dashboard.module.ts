@@ -29,7 +29,7 @@ import { MenuExpanderComponent } from './menu-expander/menu-expander.component';
     BoardViewComponent,
     MenuComponent,
     MenuItemComponent,
-    MenuExpanderComponent
+    MenuExpanderComponent,
   ],
   providers: [ ProductService, MenuService ]
 })
