@@ -10,6 +10,7 @@ using System.Collections.Generic;
 
 namespace Eshop.Dashboard.API.Controllers
 {
+  //TODO: rename to product collection
   [Route("api/products")]
   public class ProductCollectionController : Controller
   {

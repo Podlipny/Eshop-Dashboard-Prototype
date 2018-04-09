@@ -1,9 +1,7 @@
 ﻿using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Services;
