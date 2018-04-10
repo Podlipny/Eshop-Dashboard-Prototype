@@ -1,7 +1,5 @@
 ﻿using Eshop.Dashboard.Data.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Eshop.Dashboard.Services.Helpers;
 
 namespace Eshop.Dashboard.Services.Repositories

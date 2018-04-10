@@ -10,7 +10,7 @@ import { SortOrderEnum } from '../../Enums/SortOrderEnum';
 
 @Injectable()
 export class ProductService {
-  productsEndpoint: string = 'products';
+  productsEndpoint: string = 'dashboardProducts';
 
   constructor(private _userservice: UserService, private http: HttpClient) { }
 

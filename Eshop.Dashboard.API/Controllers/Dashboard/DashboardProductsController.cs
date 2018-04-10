@@ -1,31 +1,36 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
 using Eshop.Dashboard.API.Enums;
+using Eshop.Dashboard.API.Helpers;
+using Eshop.Dashboard.API.ViewModels.Products;
+using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
-namespace Eshop.Dashboard.API.Controllers
+namespace Eshop.Dashboard.API.Controllers.Dashboard
 {
-  //TODO: rename to product collection
-  [Route("api/products")]
-  public class ProductCollectionController : Controller
+  /// <summary>
+  /// Controller for Dashboard product informations
+  /// </summary>  
+  [Route("api/dashboard/[controller]")]
+  public class DashboardProductsController : Controller
   {
     private IProductsRepository _productsRepository { get; }
     private IUrlHelper _urlHelper;
 
-    public ProductCollectionController(IProductsRepository productsRepository, IUrlHelper urlHelper)
+    public DashboardProductsController(IProductsRepository productsRepository, IUrlHelper urlHelper)
     {
       _productsRepository = productsRepository;
       _urlHelper = urlHelper;
     }
 
     //TODO: authorization - not allow customers to call this
-    [Authorize]
-    [HttpGet("{id}", Name = "GetProduct")]
+    //[Authorize]
+    [HttpGet("{id}", Name = "GetDashboardProduct")]
     public IActionResult Get(Guid id)
     {
       var productEntity = _productsRepository.GetProduct(id);
@@ -41,7 +46,7 @@ namespace Eshop.Dashboard.API.Controllers
 
     //TODO: authorization - not allow customers to call this
     //[Authorize]
-    [HttpGet(Name = "GetProducts")]
+    [HttpGet(Name = "GetDashboardProducts")]
     public IActionResult Get(CollectionResourceParameters productResourceParameters)
     {
       var productsFromRepo = _productsRepository.GetProducts(productResourceParameters);
@@ -64,12 +69,56 @@ namespace Eshop.Dashboard.API.Controllers
       return Ok(products);
     }
 
+    [HttpPost(Name = "CreateProduct")]
+    public IActionResult Create([FromBody] ProductToCreateViewModel model)
+    {
+      if (model == null)
+        return BadRequest();
+
+      if (ModelState.IsValid)
+      {
+        var productEntity = Mapper.Map<Product>(model);
+        _productsRepository.Create(productEntity);
+
+        if (!_productsRepository.Save())
+        {
+          throw new Exception("Creating a product failed on save.");
+        }
+
+        var productToReturn = Mapper.Map<Product>(productEntity);
+
+        return CreatedAtRoute("GetProduct", new { id = productToReturn.Id }, productToReturn);
+      }
+
+      // return 422 - !ModelState.IsValid
+      return new UnprocessableModelStateObjectResult(ModelState);
+    }
+
+    [Authorize]
+    [HttpDelete("{id}", Name = "DeleteProduct")]
+    public IActionResult Delete(Guid id)
+    {
+      var productEntity = _productsRepository.GetProduct(id);
+      if (productEntity == null)
+      {
+        return NotFound();
+      }
+
+      _productsRepository.Delete(productEntity);
+      if (!_productsRepository.Save())
+      {
+        throw new Exception($"Deleting product {id} failed on save.");
+      }
+
+      return NoContent();
+    }
+
     private string CreateProductsResourceUri(CollectionResourceParameters productResourceParameters, ResourceUriType type)
     {
       switch (type)
       {
         case ResourceUriType.PreviousPage:
-          return _urlHelper.Link("GetProducts",
+          return _urlHelper.Link("GetDashboardProduct",
             new
             {
               fields = productResourceParameters.Fields,
@@ -79,7 +128,7 @@ namespace Eshop.Dashboard.API.Controllers
               pageSize = productResourceParameters.PageSize
             });
         case ResourceUriType.NextPage:
-          return _urlHelper.Link("GetProducts",
+          return _urlHelper.Link("GetDashboardProduct",
             new
             {
               fields = productResourceParameters.Fields,
@@ -90,7 +139,7 @@ namespace Eshop.Dashboard.API.Controllers
             });
         case ResourceUriType.Current:
         default:
-          return _urlHelper.Link("GetProducts",
+          return _urlHelper.Link("GetDashboardProduct",
             new
             {
               fields = productResourceParameters.Fields,

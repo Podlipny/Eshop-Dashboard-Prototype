@@ -12,9 +12,9 @@ using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Eshop.Dashboard.API.Controllers
+namespace Eshop.Dashboard.API.Controllers.Dashboard
 {
-  [Route("api/[controller]")]
+  [Route("api/dashboard/[controller]")]
   public class UsersController : Controller
   {
     private IUsersRepository _userRepository { get; }

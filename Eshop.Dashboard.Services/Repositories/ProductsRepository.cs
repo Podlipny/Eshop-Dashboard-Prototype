@@ -6,7 +6,6 @@ using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Linq.Dynamic.Core;
 using Eshop.Dashboard.Services.Services;
 using Eshop.Dashboard.Services.Dto;
 
@@ -35,6 +34,18 @@ namespace Eshop.Dashboard.Services.Repositories
     }
 
     /// <summary>
+    /// Gets single product by GuidId and Categoryid
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    public Product GetProductInCategory(Guid productId, Guid categoryId)
+    {
+      return _context.Products.FirstOrDefault(a => a.Id == productId && a.CategoryId == categoryId);
+    }
+    
+
+    /// <summary>
     /// Gets collection of products
     /// </summary>
     /// <returns></returns>
@@ -47,12 +58,16 @@ namespace Eshop.Dashboard.Services.Repositories
     /// Gets collection of products by ProductResourceParameters
     /// </summary>
     /// <param name="productResourceParameters"></param>
+    /// <param name="categoryId"></param>
     /// <returns></returns>
-    public PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters)
+    public PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters, Guid? categoryId = null)
     {
       IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category)
         .Include(x => x.ProductState).Include(x => x.Vendor)
         .ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDtoViewModel, Product>());
+
+      if (categoryId != null)
+        collectionBeforePaging.Where(x => x.CategoryId == categoryId);
 
       if (!string.IsNullOrEmpty(productResourceParameters.SearchQuery))
       {
@@ -70,6 +85,11 @@ namespace Eshop.Dashboard.Services.Repositories
     public bool ProductExists(Guid productId)
     {
       return _context.Products.Any(a => a.Id == productId);
+    }
+
+    public bool ProductExistsInCategory(Guid productId, Guid categoryId)
+    {
+      return _context.Products.Any(a => a.Id == productId && a.Id == categoryId);
     }
 
     public void Create(Product product)

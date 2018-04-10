@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Helpers;
 
@@ -10,11 +9,15 @@ namespace Eshop.Dashboard.Services.Repositories
   {
     Product GetProduct(Guid productId);
 
+    Product GetProductInCategory(Guid productId, Guid categoryId);
+
     IEnumerable<Product> GetProducts();
 
-    PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters);
+    PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters, Guid? categoryId = null);
 
     bool ProductExists(Guid productId);
+
+    bool ProductExistsInCategory(Guid productId, Guid categoryId);
 
     void Create(Product product);
 
