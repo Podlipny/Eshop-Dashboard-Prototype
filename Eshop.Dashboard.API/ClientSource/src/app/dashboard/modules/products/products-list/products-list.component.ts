@@ -5,10 +5,8 @@ import { IPageChangeEvent } from '@covalent/core/paging';
 import { ProductService } from '../../../services/product.service';
 import { IDatatableLoadEvent, IDataTableColumn } from '../../../../shared/datatable/datatable.component';
 import { IProduct } from '../../../../model/IProduct';
-import { ToastService } from '../../../../core/toast/toast.service';
 import 'rxjs/add/operator/map';
 
-// TODO: clean up this
 const DECIMAL_FORMAT: (v: any) => any = (v: number) => v.toFixed(2);
 
 @Component({
