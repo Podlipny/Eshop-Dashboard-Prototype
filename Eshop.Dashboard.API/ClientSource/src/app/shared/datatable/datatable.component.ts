@@ -64,8 +64,6 @@ export class DatatableComponent implements OnInit, AfterViewInit {
 
   selectedRows: any[] = [];
 
-  hasData: boolean = this.data.length === 0;
-
   constructor() { }
 
   ngOnInit() {

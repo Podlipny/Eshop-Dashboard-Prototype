@@ -20,8 +20,8 @@ export class ToastComponent implements OnInit, OnDestroy {
   title: string;
   message: string;
 
-  constructor(private _toastService: ToastService) {
-    this.toastSubscription = this._toastService.toastState.subscribe((toastMessage) => {
+  constructor(private toastService: ToastService) {
+    this.toastSubscription = this.toastService.toastState.subscribe((toastMessage) => {
       console.log(`Showing toast: ${toastMessage.message}`);
       this.activate(toastMessage.message);
     });

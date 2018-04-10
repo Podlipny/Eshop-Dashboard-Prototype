@@ -5,6 +5,7 @@ import { UserService } from '../../core/user.service';
 import { AuthService } from '../auth.service';
 import { ICredentials } from '../../model/ICredentials';
 import { Router } from '@angular/router';
+import { ToastService } from '../../core/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   requreAlert: string = 'This field is required';
 
-  constructor(private _userservice: UserService, private _authservice: AuthService, private _router: Router) {
+  constructor(private userservice: UserService, private authservice: AuthService, private toastService: ToastService, private router: Router) {
     this.loginForm = new FormGroup({
       username: this.usernameFormControl,
       password: this.passwordFormControl,
@@ -41,12 +42,13 @@ export class LoginComponent implements OnInit {
   }
 
   login(credentials: ICredentials) {
-    this._authservice.login(credentials).subscribe(tokenData => {
-      this._userservice.token = tokenData.token;
-      this._userservice.tokenExpiration = tokenData.expiration;
-      this._router.navigate(['/']);
+    this.authservice.login(credentials).subscribe(tokenData => {
+      this.userservice.token = tokenData.token;
+      this.userservice.tokenExpiration = tokenData.expiration;
+      this.router.navigate(['/']);
     }, error => {
-      // TODO: implement toasterService and loggerService
+      // TODO: implement loggerService
+      this.toastService.activate(error);
       console.log(error);
     });
   }

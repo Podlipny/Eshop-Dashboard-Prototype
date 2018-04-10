@@ -12,6 +12,6 @@ import { throwIfAlreadyLoaded } from '../module-import-guard';
 })
 export class ToastModule {
   constructor(@Optional() @SkipSelf() parentModule: ToastModule) {
-    throwIfAlreadyLoaded(parentModule, 'ToastModule')
+    throwIfAlreadyLoaded(parentModule, 'ToastModule');
   }
 }

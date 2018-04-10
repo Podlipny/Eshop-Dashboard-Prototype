@@ -11,7 +11,7 @@ import { HttpHelper } from '../helpers/HttpHelper';
 @Injectable()
 export class AuthService {
 
-  constructor(private _userservice: UserService, private http: HttpClient) {
+  constructor(private userservice: UserService, private http: HttpClient) {
   }
 
   login(credentialsObj: ICredentials): Observable<any> {
@@ -23,8 +23,8 @@ export class AuthService {
   }
 
   logout() {
-    this._userservice.user = null;
-    this._userservice.token = null;
-    this._userservice.tokenExpiration = null;
+    this.userservice.user = null;
+    this.userservice.token = null;
+    this.userservice.tokenExpiration = null;
   }
 }

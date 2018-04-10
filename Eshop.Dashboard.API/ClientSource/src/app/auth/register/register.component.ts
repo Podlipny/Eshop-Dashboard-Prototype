@@ -29,9 +29,9 @@ export class RegisterComponent implements OnInit {
   matchPasswordAlert: string = 'Passwords must match!';
 
   constructor(private fb: FormBuilder,
-              private _userService: UserService,
-              private _authService: AuthService,
-              private _router: Router,
+              private userService: UserService,
+              private authService: AuthService,
+              private router: Router,
               private toastService: ToastService) {
     this.registerForm = fb.group({
       'username': [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
@@ -50,9 +50,9 @@ export class RegisterComponent implements OnInit {
   }
 
   register(user: IUser) {
-    this._authService.register(user).subscribe(data => {
-      this._userService.user = data;
-      this._router.navigate(['/']);
+    this.authService.register(user).subscribe(data => {
+      this.userService.user = data;
+      this.router.navigate(['/']);
     }, error => {
       this.registrationError = error.error;
       console.log('Unexpected error happend!');

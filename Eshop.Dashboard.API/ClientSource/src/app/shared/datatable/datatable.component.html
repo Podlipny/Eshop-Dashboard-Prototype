@@ -74,7 +74,7 @@
 </div>
 
 <!-- Pagination -->
-<div class="md-padding" *ngIf="!hasData" layout="row" layout-align="center center">
+<div class="md-padding" *ngIf="data.length === 0" layout="row" layout-align="center center">
   <h3>No results to display.</h3>
 </div>
 <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="totalCount" (change)="page($event)">

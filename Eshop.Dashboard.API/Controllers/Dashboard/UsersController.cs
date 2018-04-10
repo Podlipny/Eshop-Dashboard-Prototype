@@ -26,7 +26,8 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
       _urlHelper = urlHelper;
     }
 
-    [Authorize]
+    //TODO: implement authentification
+    //[Authorize]
     [HttpGet(Name = "GetUsers")]
     public IActionResult Get(CollectionResourceParameters userResourceParameters)
     {

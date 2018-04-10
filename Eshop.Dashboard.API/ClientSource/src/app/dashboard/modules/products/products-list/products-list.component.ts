@@ -32,9 +32,9 @@ export class ProductsListComponent implements OnInit {
 
   selectedRows: any[] = [];
 
-  constructor(private _dataTableService: TdDataTableService,
-              private _productService: ProductService,
-              private _cdr: ChangeDetectorRef) { }
+  constructor(private dataTableService: TdDataTableService,
+              private productService: ProductService,
+              private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     // initial loading with default state
@@ -58,7 +58,7 @@ export class ProductsListComponent implements OnInit {
 
   load(loadParams: IDatatableLoadEvent): void {
     this.loading = true;
-    this._productService.loalProducts(loadParams.sortBy, loadParams.currentPage, loadParams.pageSize, loadParams.searchTerm, loadParams.sortOrder.toLowerCase())
+    this.productService.loalProducts(loadParams.sortBy, loadParams.currentPage, loadParams.pageSize, loadParams.searchTerm, loadParams.sortOrder.toLowerCase())
     .subscribe((res: HttpResponse<IProduct[]>) => {
       this.filteredData = res.body;
 
@@ -70,9 +70,9 @@ export class ProductsListComponent implements OnInit {
       // Hack - because we are setting loading and until data are loaded
       // we have to stop changeDetection and tell angular when to detect changes
       // - this happens only when we are changing pagesize
-      this._cdr.detectChanges();
+      this.cdr.detectChanges();
     }, error => {
-      console.log(error.error);
+      console.log(error);
     });
   }
 

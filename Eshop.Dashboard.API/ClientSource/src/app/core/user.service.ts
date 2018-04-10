@@ -14,7 +14,7 @@ export class UserService {
   tokenExpiration: string;
   isLoggedIn: boolean = true;
 
-  constructor(private http: HttpClient, private _router: Router) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   logout() {
