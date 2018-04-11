@@ -77,6 +77,10 @@ namespace Eshop.Dashboard.API
       });
 
       services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
+      services.AddScoped<ILoggerService, LoggerService>();
+
+      services.AddScoped<ILoggerRepository, LoggerRepository>();
+
       services.AddScoped<IUsersRepository, UsersRepository>();
       services.AddScoped<IProductsRepository, ProductsRepository>();
       services.AddScoped<ICategoriesRepository, CategoriesRepository>();

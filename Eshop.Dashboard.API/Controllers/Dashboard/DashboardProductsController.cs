@@ -8,6 +8,7 @@ using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
+using Eshop.Dashboard.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,11 +21,13 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
   public class DashboardProductsController : Controller
   {
     private IProductsRepository _productsRepository { get; }
+    private ILoggerService _logger;
     private IUrlHelper _urlHelper;
 
-    public DashboardProductsController(IProductsRepository productsRepository, IUrlHelper urlHelper)
+    public DashboardProductsController(IProductsRepository productsRepository, ILoggerService loggerService, IUrlHelper urlHelper)
     {
       _productsRepository = productsRepository;
+      _logger = loggerService;
       _urlHelper = urlHelper;
     }
 
@@ -49,6 +52,8 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
     [HttpGet(Name = "GetDashboardProducts")]
     public IActionResult Get(CollectionResourceParameters productResourceParameters)
     {
+      _logger.LogTrace("GetDashboardProducts");
+
       var productsFromRepo = _productsRepository.GetProducts(productResourceParameters);
       var products = Mapper.Map<IEnumerable<ProductDtoViewModel>>(productsFromRepo);
 

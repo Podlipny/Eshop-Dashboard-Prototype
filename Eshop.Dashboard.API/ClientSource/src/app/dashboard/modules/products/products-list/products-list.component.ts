@@ -72,6 +72,7 @@ export class ProductsListComponent implements OnInit {
       // - this happens only when we are changing pagesize
       this.cdr.detectChanges();
     }, error => {
+      this.loading = false;
       console.log(error);
     });
   }
