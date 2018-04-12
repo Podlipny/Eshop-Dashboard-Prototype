@@ -38,12 +38,13 @@ namespace Eshop.Dashboard.API.Controllers
     /// <summary>
     /// GET: Returns log entries
     /// </summary>
-    /// <param name="logResourceParameters"></param>
+    /// <param name="requestModel"></param>
     /// <returns></returns>
     [HttpGet(Name = "GetLogs")]
-    public IActionResult Get(CollectionResourceParameters logResourceParameters)
+    public IActionResult Get(LogViewModel requestModel)
     {
-      var logsFromRepo = _loggerRepository.Get(logResourceParameters);
+      var logResourceParameters =  Mapper.Map<CollectionResourceParameters>(requestModel);
+      var logsFromRepo = _loggerRepository.Get(logResourceParameters, requestModel.LogLevelId);
       var logs = Mapper.Map<IEnumerable<LogDto>>(logsFromRepo);
 
       var previousPageLink = logsFromRepo.HasPrevious ? CreateProductsResourceUri(logResourceParameters, ResourceUriType.PreviousPage) : null;

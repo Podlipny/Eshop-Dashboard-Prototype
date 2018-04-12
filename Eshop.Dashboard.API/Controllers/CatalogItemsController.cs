@@ -40,7 +40,7 @@ namespace Eshop.Dashboard.API.Controllers
     }
 
     [HttpGet(Name = "GetCatalogItems")]
-    public IActionResult Get(Guid categoryId, SortableCollectionResourceParameters productResourceParameters)
+    public IActionResult Get(Guid categoryId, CollectionResourceParameters productResourceParameters)
     {
      var productsFromRepo = _productsRepository.GetProducts(productResourceParameters, categoryId);
       var products = Mapper.Map<IEnumerable<ProductDto>>(productsFromRepo);
@@ -62,7 +62,7 @@ namespace Eshop.Dashboard.API.Controllers
       return Ok(products);
     }
 
-    private string CreateProductsResourceUri(SortableCollectionResourceParameters productResourceParameters, ResourceUriType type)
+    private string CreateProductsResourceUri(CollectionResourceParameters productResourceParameters, ResourceUriType type)
     {
       switch (type)
       {

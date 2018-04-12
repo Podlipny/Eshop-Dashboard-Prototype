@@ -29,7 +29,7 @@ namespace Eshop.Dashboard.API.Controllers
     //TODO: implement authentification
     //[Authorize]
     [HttpGet(Name = "GetUsers")]
-    public IActionResult Get(SortableCollectionResourceParameters userResourceParameters)
+    public IActionResult Get(CollectionResourceParameters userResourceParameters)
     {
       var usersFromRepo = _userRepository.GetUsers(userResourceParameters);
       var users = Mapper.Map<IEnumerable<UserDto>>(usersFromRepo);
@@ -124,7 +124,7 @@ namespace Eshop.Dashboard.API.Controllers
     }
 
     //TODO: move this to base class
-    private string CreateUsersResourceUri(SortableCollectionResourceParameters usersResourceParameters, ResourceUriType type)
+    private string CreateUsersResourceUri(CollectionResourceParameters usersResourceParameters, ResourceUriType type)
     {
       switch (type)
       {

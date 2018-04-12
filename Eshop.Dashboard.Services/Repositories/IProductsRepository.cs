@@ -13,7 +13,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     IEnumerable<Product> GetProducts();
 
-    PagedList<Product> GetProducts(SortableCollectionResourceParameters productResourceParameters, Guid? categoryId = null);
+    PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters, Guid? categoryId = null);
 
     bool ProductExists(Guid productId);
 

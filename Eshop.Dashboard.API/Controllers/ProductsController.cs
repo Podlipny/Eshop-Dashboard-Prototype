@@ -50,7 +50,7 @@ namespace Eshop.Dashboard.API.Controllers
     //TODO: authorization - not allow customers to call this
     //[Authorize]
     [HttpGet(Name = "GetProducts")]
-    public IActionResult Get(SortableCollectionResourceParameters productResourceParameters)
+    public IActionResult Get(CollectionResourceParameters productResourceParameters)
     {
       _logger.LogTrace("GetProducts");
 
@@ -118,7 +118,7 @@ namespace Eshop.Dashboard.API.Controllers
       return NoContent();
     }
 
-    private string CreateProductsResourceUri(SortableCollectionResourceParameters productResourceParameters, ResourceUriType type)
+    private string CreateProductsResourceUri(CollectionResourceParameters productResourceParameters, ResourceUriType type)
     {
       switch (type)
       {

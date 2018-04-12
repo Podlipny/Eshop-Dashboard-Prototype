@@ -14,6 +14,6 @@ namespace Eshop.Dashboard.Services.Repositories
   {
     void Log(LogEventsEnum eventType, string message);
 
-    PagedList<Log> Get(CollectionResourceParameters logResourceParameters);
+    PagedList<Log> Get(CollectionResourceParameters logResourceParameters, int? logLevel = null);
   }
 }

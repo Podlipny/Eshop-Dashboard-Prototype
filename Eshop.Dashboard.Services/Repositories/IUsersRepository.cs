@@ -12,7 +12,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     User FindByName(string username);
 
-    PagedList<User> GetUsers(SortableCollectionResourceParameters productResourceParameters);
+    PagedList<User> GetUsers(CollectionResourceParameters productResourceParameters);
 
     bool UserExists(Guid userId);
 

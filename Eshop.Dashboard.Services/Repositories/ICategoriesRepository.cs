@@ -11,7 +11,7 @@ namespace Eshop.Dashboard.Services.Repositories
 
     IEnumerable<Category> GetCategories();
 
-    PagedList<Category> GetCategories(SortableCollectionResourceParameters categoriesResourceParameters);
+    PagedList<Category> GetCategories(CollectionResourceParameters categoriesResourceParameters);
 
     bool CategoryExists(Guid categoryId);
 

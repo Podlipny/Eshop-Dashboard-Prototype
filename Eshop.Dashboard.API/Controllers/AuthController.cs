@@ -60,11 +60,14 @@ namespace Eshop.Dashboard.API.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            // if we should remember user, we set expiration to 3 months
+            var tokenExpiration = model.RememberMe ? DateTime.UtcNow.AddMonths(3) : DateTime.UtcNow.AddSeconds(20);//DateTime.UtcNow.AddMinutes(120);
+
             var token = new JwtSecurityToken(
               _configuration["Tokens:Issuer"],
               _configuration["Tokens:Audience"],
               claims,
-              expires: DateTime.Now.AddMinutes(30),
+              expires: tokenExpiration,
               signingCredentials: creds);
 
             var results = new

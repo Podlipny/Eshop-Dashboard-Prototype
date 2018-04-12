@@ -37,7 +37,7 @@ namespace Eshop.Dashboard.Services.Repositories
       return _context.Users.FirstOrDefault(a => a.Username == username);
     }
 
-    public PagedList<User> GetUsers(SortableCollectionResourceParameters userResourceParameters)
+    public PagedList<User> GetUsers(CollectionResourceParameters userResourceParameters)
     {
       IQueryable<User> collectionBeforePaging = _context.Users.Include(x => x.Contact)
         .ApplySort(userResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<UserDto, User>());

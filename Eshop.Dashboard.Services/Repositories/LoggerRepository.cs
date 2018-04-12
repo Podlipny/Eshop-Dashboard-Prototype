@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
-using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Enums;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Services;
@@ -15,9 +15,7 @@ namespace Eshop.Dashboard.Services.Repositories
   /// </summary>
   public class LoggerRepository : BaseRepository, ILoggerRepository
   {
-    private IPropertyMappingService _propertyMappingService;
-
-    public LoggerRepository(EshopDbContext context, IPropertyMappingService propertyMappingService)
+    public LoggerRepository(EshopDbContext context)
       : base(context)
     {
     }
@@ -35,9 +33,12 @@ namespace Eshop.Dashboard.Services.Repositories
       base.Save();
     }
 
-    public PagedList<Log> Get(CollectionResourceParameters logResourceParameters)
+    public PagedList<Log> Get(CollectionResourceParameters logResourceParameters, int? logLevel = null)
     {
       IQueryable<Log> collectionBeforePaging = _context.Logs.OrderByDescending(o => o.CreatedWhen);
+
+      if(logLevel != null)
+        collectionBeforePaging = collectionBeforePaging.Where(x => x.EvenType == ((LogEventsEnum)Enum.ToObject(typeof(LogEventsEnum), logLevel)).GetStringValue());
 
       if (!string.IsNullOrEmpty(logResourceParameters.SearchQuery))
       {

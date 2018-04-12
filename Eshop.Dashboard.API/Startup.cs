@@ -8,6 +8,7 @@ using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
 using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Dto;
+using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
 using Eshop.Dashboard.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -54,6 +55,7 @@ namespace Eshop.Dashboard.API
             ValidateIssuerSigningKey = true,
             ValidIssuer = Configuration["Tokens:Issuer"],
             ValidAudience = Configuration["Tokens:Audience"],
+            LifetimeValidator = CustomLifetimeValidator,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
           };
         });
@@ -143,6 +145,7 @@ namespace Eshop.Dashboard.API
       AutoMapper.Mapper.Initialize(cfg =>
       {
         cfg.CreateMap<Log, LogDto>();
+        cfg.CreateMap<LogViewModel, CollectionResourceParameters>();
         cfg.CreateMap<RegisterViewModel, User>();
         cfg.CreateMap<User, UserDto>()
           .ForMember(dest => dest.Telephone, opt => opt.MapFrom(src => src.Contact.Telephone))
@@ -173,6 +176,24 @@ namespace Eshop.Dashboard.API
       app.UseStaticFiles();
 
       app.UseMvc();
+    }
+
+    /// <summary>
+    /// Fixes the problem with Time verification in JWT authentificator
+    /// more here: stackoverflow.com/questions/39728519/jwtsecuritytoken-doesnt-expire-when-it-should
+    /// </summary>
+    /// <param name="notBefore"></param>
+    /// <param name="expires"></param>
+    /// <param name="tokenToValidate"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
+    private bool CustomLifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken tokenToValidate, TokenValidationParameters @param)
+    {
+      if (expires != null)
+      {
+        return expires > DateTime.UtcNow;
+      }
+      return false;
     }
   }
 }
