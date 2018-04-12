@@ -8,6 +8,7 @@ namespace Eshop.Dashboard.Data
     public EshopDbContext(DbContextOptions<EshopDbContext> options) : base(options)
     {
     }
+    public DbSet<Log> Logs { get; set; }
 
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
