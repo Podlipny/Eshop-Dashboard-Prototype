@@ -26,7 +26,7 @@ namespace Eshop.Dashboard.API
 
       var builder = new DbContextOptionsBuilder<EshopDbContext>();
 
-      var connectionString = configuration["connectionStrings:eshopDasboardDBConnectionString"];
+      var connectionString = configuration["ConnectionStrings:eshopDasboardDBConnectionString"];
 
       builder.UseSqlServer(connectionString);
 

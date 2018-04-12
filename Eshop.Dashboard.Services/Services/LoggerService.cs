@@ -9,43 +9,42 @@ namespace Eshop.Dashboard.Services.Services
 {
   /// <summary>
   /// Logger service for logging into file and database
-  /// All events are logged to file, Only Event and Error are logged to DB
-  /// This behavior can be changened in config file
+  /// All levels are logged to file, Only Event and Error are logged to DB
+  /// - this behavior can be changened in config file
+  /// - NLog.config must be allowed to Copy to output directory
   /// </summary>
   public class LoggerService : ILoggerService
   {
-    private readonly ILoggerFactory _loggerFactory;
     private readonly ILoggerRepository _loggerRepository;
     private readonly ILogger _logger;
 
-    private readonly bool _logAllToDb;
+    private readonly bool _logToDatabase;
 
     public LoggerService(ILoggerFactory loggerFactory, IConfiguration configuration, ILoggerRepository loggerRepository)
     {
-      _loggerFactory = loggerFactory;
       _loggerRepository = loggerRepository;
-      _logger = _loggerFactory.CreateLogger("Global exception logger");
+      _logger = loggerFactory.CreateLogger("Global file logger");
 
-      _logAllToDb = bool.Parse(configuration["Logging:LogToDB"]);
+      _logToDatabase = bool.Parse(configuration["Logging:LogToDatabase"]);
     }
 
     public void LogInfo(string message)
     {
-      if (_logAllToDb)
+      if (_logToDatabase)
         _loggerRepository.Log(LogEventsEnum.Info, message);
       _logger.LogInformation(message);
     }
 
     public void LogDebug(string message)
     {
-      if (_logAllToDb)
+      if (_logToDatabase)
         _loggerRepository.Log(LogEventsEnum.Debug, message);
       _logger.LogDebug(message);
     }
 
     public void LogTrace(string message)
     {
-      if (_logAllToDb)
+      if (_logToDatabase)
         _loggerRepository.Log(LogEventsEnum.Trace, message);
       _logger.LogTrace(message);
     }
@@ -63,7 +62,7 @@ namespace Eshop.Dashboard.Services.Services
     }
 
     /// <summary>
-    /// Loggs information about user specific actions
+    /// Logs information about user specific actions
     /// </summary>
     /// <param name="message">Describtion of the action</param>
     /// <param name="userId">User identificator</param>
@@ -75,7 +74,7 @@ namespace Eshop.Dashboard.Services.Services
     }
 
     /// <summary>
-    /// Loggs information about user specific actions
+    /// Logs information about user specific actions
     /// </summary>
     /// <param name="message">Describtion of the action</param>
     /// <param name="user">User object</param>

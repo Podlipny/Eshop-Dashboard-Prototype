@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Eshop.Dashboard.API.ViewModels;
 using Eshop.Dashboard.API.ViewModels.Users;
@@ -64,9 +66,13 @@ namespace Eshop.Dashboard.API
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "EShop API", Version = "v1" });
+        c.AddSecurityDefinition("Authorization", new ApiKeyScheme { In = "header", Description = "Please enter JWT with Bearer into field", Name = "Authorization", Type = "apiKey" });
+        c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+            { "Authorization", Enumerable.Empty<string>() },
+        });
       });
 
-      var connectionString = Configuration["connectionStrings:eshopDasboardDBConnectionString"];
+      var connectionString = Configuration["ConnectionStrings:eshopDasboardDBConnectionString"];
       services.AddDbContext<EshopDbContext>(o => o.UseSqlServer(connectionString));
 
       services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

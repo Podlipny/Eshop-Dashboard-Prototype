@@ -2,41 +2,33 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Eshop.Dashboard.API.Enums;
-using Eshop.Dashboard.API.Helpers;
-using Eshop.Dashboard.API.ViewModels.Products;
-using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
-using Eshop.Dashboard.Services.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Eshop.Dashboard.API.Controllers.Dashboard
+namespace Eshop.Dashboard.API.Controllers
 {
   /// <summary>
-  /// Controller for Dashboard product informations
-  /// </summary>  
-  [Route("api/dashboard/[controller]")]
-  public class DashboardProductsController : Controller
+  /// Controller for Client product informations
+  /// </summary>
+  [Route("api/categories/{categoryId}/[controller]")]
+  public class CatalogItemsController : Controller
   {
     private IProductsRepository _productsRepository { get; }
-    private ILoggerService _logger;
     private IUrlHelper _urlHelper;
 
-    public DashboardProductsController(IProductsRepository productsRepository, ILoggerService loggerService, IUrlHelper urlHelper)
+    public CatalogItemsController(IProductsRepository productsRepository, IUrlHelper urlHelper)
     {
       _productsRepository = productsRepository;
-      _logger = loggerService;
       _urlHelper = urlHelper;
     }
 
-    //TODO: authorization - not allow customers to call this
-    //[Authorize]
-    [HttpGet("{id}", Name = "GetDashboardProduct")]
-    public IActionResult Get(Guid id)
+    [HttpGet("{id}", Name = "GetCatalogItem")]
+    public IActionResult Get(Guid categoryId, Guid id)
     {
-      var productEntity = _productsRepository.GetProduct(id);
+      // TODO: return client specific product information
+      var productEntity = _productsRepository.GetProductInCategory(id, categoryId);
       if (productEntity == null)
       {
         return NotFound($"Product with id: {id} does not found!");
@@ -47,14 +39,10 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
       return Ok(productToReturn);
     }
 
-    //TODO: authorization - not allow customers to call this
-    //[Authorize]
-    [HttpGet(Name = "GetDashboardProducts")]
-    public IActionResult Get(CollectionResourceParameters productResourceParameters)
+    [HttpGet(Name = "GetCatalogItems")]
+    public IActionResult Get(Guid categoryId, CollectionResourceParameters productResourceParameters)
     {
-      _logger.LogTrace("GetDashboardProducts");
-
-      var productsFromRepo = _productsRepository.GetProducts(productResourceParameters);
+     var productsFromRepo = _productsRepository.GetProducts(productResourceParameters, categoryId);
       var products = Mapper.Map<IEnumerable<ProductDtoViewModel>>(productsFromRepo);
 
       var previousPageLink = productsFromRepo.HasPrevious ? CreateProductsResourceUri(productResourceParameters, ResourceUriType.PreviousPage) : null;
@@ -74,56 +62,12 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
       return Ok(products);
     }
 
-    [HttpPost(Name = "CreateProduct")]
-    public IActionResult Create([FromBody] ProductToCreateViewModel model)
-    {
-      if (model == null)
-        return BadRequest();
-
-      if (ModelState.IsValid)
-      {
-        var productEntity = Mapper.Map<Product>(model);
-        _productsRepository.Create(productEntity);
-
-        if (!_productsRepository.Save())
-        {
-          throw new Exception("Creating a product failed on save.");
-        }
-
-        var productToReturn = Mapper.Map<Product>(productEntity);
-
-        return CreatedAtRoute("GetProduct", new { id = productToReturn.Id }, productToReturn);
-      }
-
-      // return 422 - !ModelState.IsValid
-      return new UnprocessableModelStateObjectResult(ModelState);
-    }
-
-    [Authorize]
-    [HttpDelete("{id}", Name = "DeleteProduct")]
-    public IActionResult Delete(Guid id)
-    {
-      var productEntity = _productsRepository.GetProduct(id);
-      if (productEntity == null)
-      {
-        return NotFound();
-      }
-
-      _productsRepository.Delete(productEntity);
-      if (!_productsRepository.Save())
-      {
-        throw new Exception($"Deleting product {id} failed on save.");
-      }
-
-      return NoContent();
-    }
-
     private string CreateProductsResourceUri(CollectionResourceParameters productResourceParameters, ResourceUriType type)
     {
       switch (type)
       {
         case ResourceUriType.PreviousPage:
-          return _urlHelper.Link("GetDashboardProduct",
+          return _urlHelper.Link("GetCatalogItem",
             new
             {
               fields = productResourceParameters.Fields,
@@ -133,7 +77,7 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
               pageSize = productResourceParameters.PageSize
             });
         case ResourceUriType.NextPage:
-          return _urlHelper.Link("GetDashboardProduct",
+          return _urlHelper.Link("GetCatalogItem",
             new
             {
               fields = productResourceParameters.Fields,
@@ -144,7 +88,7 @@ namespace Eshop.Dashboard.API.Controllers.Dashboard
             });
         case ResourceUriType.Current:
         default:
-          return _urlHelper.Link("GetDashboardProduct",
+          return _urlHelper.Link("GetCatalogItem",
             new
             {
               fields = productResourceParameters.Fields,

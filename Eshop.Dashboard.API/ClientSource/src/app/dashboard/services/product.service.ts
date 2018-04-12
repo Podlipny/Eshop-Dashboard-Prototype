@@ -16,7 +16,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
 export class ProductService {
-  productsEndpoint: string = 'dashboard/DashboardProducts';
+  productsEndpoint: string = 'products';
 
   constructor(private userService: UserService,
               private toasterService: ToastService,
