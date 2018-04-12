@@ -60,11 +60,11 @@ namespace Eshop.Dashboard.Services.Repositories
     /// <param name="productResourceParameters"></param>
     /// <param name="categoryId"></param>
     /// <returns></returns>
-    public PagedList<Product> GetProducts(CollectionResourceParameters productResourceParameters, Guid? categoryId = null)
+    public PagedList<Product> GetProducts(SortableCollectionResourceParameters productResourceParameters, Guid? categoryId = null)
     {
       IQueryable<Product> collectionBeforePaging = _context.Products.Include(x => x.Category)
         .Include(x => x.ProductState).Include(x => x.Vendor)
-        .ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDtoViewModel, Product>());
+        .ApplySort(productResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<ProductDto, Product>());
 
       if (categoryId != null)
         collectionBeforePaging.Where(x => x.CategoryId == categoryId);

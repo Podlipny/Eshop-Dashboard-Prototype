@@ -49,6 +49,13 @@ namespace Eshop.Dashboard.Services.Services
       _logger.LogTrace(message);
     }
 
+    public void LogWarning(string message)
+    {
+      if (_logToDatabase)
+        _loggerRepository.Log(LogEventsEnum.Warning, message);
+      _logger.LogWarning(message);
+    }
+
     public void LogError(string message)
     {
       _loggerRepository.Log(LogEventsEnum.Error, message);
@@ -62,26 +69,37 @@ namespace Eshop.Dashboard.Services.Services
     }
 
     /// <summary>
+    /// Logs information about client specific actions
+    /// </summary>
+    /// <param name="message">Description of the action</param>
+    public void LogEvent(string message)
+    {
+
+      _loggerRepository.Log(LogEventsEnum.Event, message);
+      _logger.LogInformation(message);
+    }
+
+    /// <summary>
     /// Logs information about user specific actions
     /// </summary>
-    /// <param name="message">Describtion of the action</param>
+    /// <param name="message">Description of the action</param>
     /// <param name="userId">User identificator</param>
     public void LogEvent(string message, Guid userId)
     {
 
-      _loggerRepository.Log(LogEventsEnum.Debug, $"{message}: UserId: {userId}");
+      _loggerRepository.Log(LogEventsEnum.Event, $"{message}: UserId: {userId}");
       _logger.LogInformation($"{message}: UserId: {userId}");
     }
 
     /// <summary>
     /// Logs information about user specific actions
     /// </summary>
-    /// <param name="message">Describtion of the action</param>
+    /// <param name="message">Description of the action</param>
     /// <param name="user">User object</param>
     public void LogEvent(string message, User user)
     {
-      _loggerRepository.Log(LogEventsEnum.Debug, $"{message}: UserId: {user.Id}");
-      _logger.LogInformation($"{message}: UserId: {user.Id}");
+      _loggerRepository.Log(LogEventsEnum.Event, $"{message}: UserId: {user.Id}");
+      _logger.LogInformation($"{message}: UserId: {user.Id}, UserEmail: {user.Email}");
     }
   }
 }

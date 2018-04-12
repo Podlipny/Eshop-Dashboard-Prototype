@@ -2,7 +2,7 @@
 
 namespace Eshop.Dashboard.Services.Dto
 {
-  public class UserDtoViewModel
+  public class UserDto
   {
     public Guid Id { get; set; }
 

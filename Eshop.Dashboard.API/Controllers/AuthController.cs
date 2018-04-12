@@ -43,14 +43,18 @@ namespace Eshop.Dashboard.API.Controllers
 
           if (verified)
           {
-            var userDto = Mapper.Map<UserDtoViewModel>(userEntity);
+            var userDto = Mapper.Map<UserDto>(userEntity);
 
             // Create the token
             var claims = new[]
             {
-              new Claim(JwtRegisteredClaimNames.Sub, JsonConvert.SerializeObject(userDto)),
-              new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-              new Claim(JwtRegisteredClaimNames.UniqueName, userDto.Username)
+              //new Claim(JwtRegisteredClaimNames.Sub, JsonConvert.SerializeObject(userDto)),
+              //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+              //new Claim(JwtRegisteredClaimNames.UniqueName, userDto.Username)
+              new Claim(ClaimTypes.NameIdentifier, userDto.Email, ClaimValueTypes.String),
+              //new Claim(ClaimTypes.Role, userDto.Role, ClaimValueTypes.String),
+              new Claim(ClaimTypes.Name, userDto.Username, ClaimValueTypes.String),
+              new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(30).Second.ToString(), ClaimValueTypes.DaytimeDuration)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));

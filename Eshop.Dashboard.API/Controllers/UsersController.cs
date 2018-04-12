@@ -29,10 +29,10 @@ namespace Eshop.Dashboard.API.Controllers
     //TODO: implement authentification
     //[Authorize]
     [HttpGet(Name = "GetUsers")]
-    public IActionResult Get(CollectionResourceParameters userResourceParameters)
+    public IActionResult Get(SortableCollectionResourceParameters userResourceParameters)
     {
       var usersFromRepo = _userRepository.GetUsers(userResourceParameters);
-      var users = Mapper.Map<IEnumerable<UserDtoViewModel>>(usersFromRepo);
+      var users = Mapper.Map<IEnumerable<UserDto>>(usersFromRepo);
 
       var previousPageLink = usersFromRepo.HasPrevious ? CreateUsersResourceUri(userResourceParameters, ResourceUriType.PreviousPage) : null;
 
@@ -61,7 +61,7 @@ namespace Eshop.Dashboard.API.Controllers
         return NotFound($"User with id: {id} does not exist!");
       }
 
-      var userToReturn = Mapper.Map<UserDtoViewModel>(userEntity);
+      var userToReturn = Mapper.Map<UserDto>(userEntity);
 
       return Ok(userToReturn);
     }
@@ -74,7 +74,13 @@ namespace Eshop.Dashboard.API.Controllers
 
       if (ModelState.IsValid)
       {
-        var userEntity = _userRepository.FindByName(model.Username);
+        var userEntity = _userRepository.FindByEmail(model.Email);
+        if (userEntity != null)
+        {
+          return StatusCode((int)HttpStatusCode.Conflict, $"E-mail: {model.Email} already exist in database!");
+        }
+
+        userEntity = _userRepository.FindByName(model.Username);
         if (userEntity != null)
         {
           return StatusCode((int)HttpStatusCode.Conflict, $"Username: {model.Username} already exist in database!");
@@ -88,7 +94,7 @@ namespace Eshop.Dashboard.API.Controllers
           throw new Exception("Creating an user failed on save.");
         }
 
-        var userToReturn = Mapper.Map<UserDtoViewModel>(userEntity);
+        var userToReturn = Mapper.Map<UserDto>(userEntity);
 
         return CreatedAtRoute("GetUser", new { id = userToReturn.Id }, userToReturn);
 
@@ -118,7 +124,7 @@ namespace Eshop.Dashboard.API.Controllers
     }
 
     //TODO: move this to base class
-    private string CreateUsersResourceUri(CollectionResourceParameters usersResourceParameters, ResourceUriType type)
+    private string CreateUsersResourceUri(SortableCollectionResourceParameters usersResourceParameters, ResourceUriType type)
     {
       switch (type)
       {

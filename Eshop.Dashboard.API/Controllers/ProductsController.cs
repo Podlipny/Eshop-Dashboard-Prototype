@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Eshop.Dashboard.API.Controllers
 {
   /// <summary>
-  /// Controller for Dashboard product informations
+  /// Controller for application Dashboard informations
   /// </summary>  
   [Route("api/[controller]")]
   public class ProductsController : Controller
@@ -42,7 +42,7 @@ namespace Eshop.Dashboard.API.Controllers
         return NotFound($"Product with id: {id} does not found!");
       }
 
-      var productToReturn = Mapper.Map<ProductDtoViewModel>(productEntity);
+      var productToReturn = Mapper.Map<ProductDto>(productEntity);
 
       return Ok(productToReturn);
     }
@@ -50,12 +50,12 @@ namespace Eshop.Dashboard.API.Controllers
     //TODO: authorization - not allow customers to call this
     //[Authorize]
     [HttpGet(Name = "GetProducts")]
-    public IActionResult Get(CollectionResourceParameters productResourceParameters)
+    public IActionResult Get(SortableCollectionResourceParameters productResourceParameters)
     {
       _logger.LogTrace("GetProducts");
 
       var productsFromRepo = _productsRepository.GetProducts(productResourceParameters);
-      var products = Mapper.Map<IEnumerable<ProductDtoViewModel>>(productsFromRepo);
+      var products = Mapper.Map<IEnumerable<ProductDto>>(productsFromRepo);
 
       var previousPageLink = productsFromRepo.HasPrevious ? CreateProductsResourceUri(productResourceParameters, ResourceUriType.PreviousPage) : null;
 
@@ -118,12 +118,12 @@ namespace Eshop.Dashboard.API.Controllers
       return NoContent();
     }
 
-    private string CreateProductsResourceUri(CollectionResourceParameters productResourceParameters, ResourceUriType type)
+    private string CreateProductsResourceUri(SortableCollectionResourceParameters productResourceParameters, ResourceUriType type)
     {
       switch (type)
       {
         case ResourceUriType.PreviousPage:
-          return _urlHelper.Link("GetProduct",
+          return _urlHelper.Link("GetProducts",
             new
             {
               fields = productResourceParameters.Fields,
@@ -133,7 +133,7 @@ namespace Eshop.Dashboard.API.Controllers
               pageSize = productResourceParameters.PageSize
             });
         case ResourceUriType.NextPage:
-          return _urlHelper.Link("GetProduct",
+          return _urlHelper.Link("GetProducts",
             new
             {
               fields = productResourceParameters.Fields,
@@ -144,7 +144,7 @@ namespace Eshop.Dashboard.API.Controllers
             });
         case ResourceUriType.Current:
         default:
-          return _urlHelper.Link("GetProduct",
+          return _urlHelper.Link("GetProducts",
             new
             {
               fields = productResourceParameters.Fields,

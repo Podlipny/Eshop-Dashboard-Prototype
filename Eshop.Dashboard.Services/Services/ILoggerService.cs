@@ -11,9 +11,13 @@ namespace Eshop.Dashboard.Services.Services
 
     void LogTrace(string message);
 
+    void LogWarning(string message);
+    
     void LogError(string message);
 
     void LogError(Exception exception);
+
+    void LogEvent(string message);
 
     void LogEvent(string message, Guid userId);
 

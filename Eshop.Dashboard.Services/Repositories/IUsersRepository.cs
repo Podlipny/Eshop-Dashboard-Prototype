@@ -8,9 +8,11 @@ namespace Eshop.Dashboard.Services.Repositories
   {
     User GetUser(Guid userId);
 
+    User FindByEmail(string email);
+
     User FindByName(string username);
 
-    PagedList<User> GetUsers(CollectionResourceParameters productResourceParameters);
+    PagedList<User> GetUsers(SortableCollectionResourceParameters productResourceParameters);
 
     bool UserExists(Guid userId);
 

@@ -7,6 +7,10 @@ namespace Eshop.Dashboard.API.ViewModels.Users
     [Required(ErrorMessage = "Username can't be empty!")]
     public string Username { get; set; }
 
+    [Required]
+    [MaxLength(255)]
+    public string Email { get; set; }
+
     [Required(ErrorMessage = "FirstName can't be empty!")]
     [MaxLength(50)]
     public string Firstname { get; set; }

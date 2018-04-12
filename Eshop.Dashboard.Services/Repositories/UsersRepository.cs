@@ -27,15 +27,20 @@ namespace Eshop.Dashboard.Services.Repositories
       return _context.Users.FirstOrDefault(a => a.Id == userId);
     }
 
+    public User FindByEmail(string email)
+    {
+      return _context.Users.FirstOrDefault(a => a.Email == email);
+    }
+    
     public User FindByName(string username)
     {
       return _context.Users.FirstOrDefault(a => a.Username == username);
     }
 
-    public PagedList<User> GetUsers(CollectionResourceParameters userResourceParameters)
+    public PagedList<User> GetUsers(SortableCollectionResourceParameters userResourceParameters)
     {
       IQueryable<User> collectionBeforePaging = _context.Users.Include(x => x.Contact)
-        .ApplySort(userResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<UserDtoViewModel, User>());
+        .ApplySort(userResourceParameters.OrderBy, _propertyMappingService.GetPropertyMapping<UserDto, User>());
 
       if (!string.IsNullOrEmpty(userResourceParameters.SearchQuery))
       {
@@ -58,6 +63,11 @@ namespace Eshop.Dashboard.Services.Repositories
     public bool UserExists(Guid userId)
     {
       return _context.Users.Any(a => a.Id == userId);
+    }
+
+    public bool UserExists(string email, string username)
+    {
+      return _context.Users.Any(a => a.Email == email || a.Username == username);
     }
 
     public void CreateUser(User user)

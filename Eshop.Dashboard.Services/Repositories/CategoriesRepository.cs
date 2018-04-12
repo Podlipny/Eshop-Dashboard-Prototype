@@ -32,7 +32,7 @@ namespace Eshop.Dashboard.Services.Repositories
       return _context.Categories.Include(x => x.Products).ToList();
     }
 
-    public PagedList<Category> GetCategories(CollectionResourceParameters categoriesResourceParameters)
+    public PagedList<Category> GetCategories(SortableCollectionResourceParameters categoriesResourceParameters)
     {
       throw new NotImplementedException();
     }

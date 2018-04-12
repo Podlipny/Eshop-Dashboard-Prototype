@@ -29,38 +29,38 @@ namespace Eshop.Dashboard.Services.Services
 
     private readonly Dictionary<string, PropertyMappingValue> _productPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
     {
-      { nameof(ProductDtoViewModel.Id), new PropertyMappingValue(new List<string>() {"Id"}) },
-      { nameof(ProductDtoViewModel.Name), new PropertyMappingValue(new List<string>() {"Name"}) },
-      { nameof(ProductDtoViewModel.Description), new PropertyMappingValue(new List<string>() {"Description"}) },
-      { nameof(ProductDtoViewModel.Price), new PropertyMappingValue(new List<string>() {"Price"}) },
-      { nameof(ProductDtoViewModel.CategoryId), new PropertyMappingValue(new List<string>() {"Category.Id"}) },
-      { nameof(ProductDtoViewModel.CategoryName), new PropertyMappingValue(new List<string>() {"Category.Name"}) },
-      { nameof(ProductDtoViewModel.VendorId), new PropertyMappingValue(new List<string>() {"Vendor.Id"}) },
-      { nameof(ProductDtoViewModel.VendorName), new PropertyMappingValue(new List<string>() {"Vendor.Name"})},
-      { nameof(ProductDtoViewModel.State), new PropertyMappingValue(new List<string>() {"ProductState.Name"}) }
+      { nameof(ProductDto.Id), new PropertyMappingValue(new List<string>() {"Id"}) },
+      { nameof(ProductDto.Name), new PropertyMappingValue(new List<string>() {"Name"}) },
+      { nameof(ProductDto.Description), new PropertyMappingValue(new List<string>() {"Description"}) },
+      { nameof(ProductDto.Price), new PropertyMappingValue(new List<string>() {"Price"}) },
+      { nameof(ProductDto.CategoryId), new PropertyMappingValue(new List<string>() {"Category.Id"}) },
+      { nameof(ProductDto.CategoryName), new PropertyMappingValue(new List<string>() {"Category.Name"}) },
+      { nameof(ProductDto.VendorId), new PropertyMappingValue(new List<string>() {"Vendor.Id"}) },
+      { nameof(ProductDto.VendorName), new PropertyMappingValue(new List<string>() {"Vendor.Name"})},
+      { nameof(ProductDto.State), new PropertyMappingValue(new List<string>() {"ProductState.Name"}) }
     };
 
     private readonly Dictionary<string, PropertyMappingValue> _userPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
     {
-      { nameof(UserDtoViewModel.Id), new PropertyMappingValue(new List<string>() {"Id"}) },
-      { nameof(UserDtoViewModel.Username), new PropertyMappingValue(new List<string>() {"Username"}) },
-      { nameof(UserDtoViewModel.Email), new PropertyMappingValue(new List<string>() {"Email"}) },
-      { nameof(UserDtoViewModel.Firstname), new PropertyMappingValue(new List<string>() {"Firstname"}) },
-      { nameof(UserDtoViewModel.Lastname), new PropertyMappingValue(new List<string>() {"Lastname"}) },
-      { nameof(UserDtoViewModel.Ico), new PropertyMappingValue(new List<string>() {"Ico"}) },
-      { nameof(UserDtoViewModel.Dic), new PropertyMappingValue(new List<string>() {"Dic"}) },
-      { nameof(UserDtoViewModel.Telephone), new PropertyMappingValue(new List<string>() {"Contact.Telephone"})},
-      { nameof(UserDtoViewModel.Address1), new PropertyMappingValue(new List<string>() {"Contact.Address1"}) },
-      { nameof(UserDtoViewModel.Address2), new PropertyMappingValue(new List<string>() {"Contact.Address2"}) },
-      { nameof(UserDtoViewModel.Psc), new PropertyMappingValue(new List<string>() {"Contact.Psc"}) },
-      { nameof(UserDtoViewModel.City), new PropertyMappingValue(new List<string>() {"Contact.City"}) },
-      { nameof(UserDtoViewModel.State), new PropertyMappingValue(new List<string>() {"Contact.State"}) }
+      { nameof(UserDto.Id), new PropertyMappingValue(new List<string>() {"Id"}) },
+      { nameof(UserDto.Username), new PropertyMappingValue(new List<string>() {"Username"}) },
+      { nameof(UserDto.Email), new PropertyMappingValue(new List<string>() {"Email"}) },
+      { nameof(UserDto.Firstname), new PropertyMappingValue(new List<string>() {"Firstname"}) },
+      { nameof(UserDto.Lastname), new PropertyMappingValue(new List<string>() {"Lastname"}) },
+      { nameof(UserDto.Ico), new PropertyMappingValue(new List<string>() {"Ico"}) },
+      { nameof(UserDto.Dic), new PropertyMappingValue(new List<string>() {"Dic"}) },
+      { nameof(UserDto.Telephone), new PropertyMappingValue(new List<string>() {"Contact.Telephone"})},
+      { nameof(UserDto.Address1), new PropertyMappingValue(new List<string>() {"Contact.Address1"}) },
+      { nameof(UserDto.Address2), new PropertyMappingValue(new List<string>() {"Contact.Address2"}) },
+      { nameof(UserDto.Psc), new PropertyMappingValue(new List<string>() {"Contact.Psc"}) },
+      { nameof(UserDto.City), new PropertyMappingValue(new List<string>() {"Contact.City"}) },
+      { nameof(UserDto.State), new PropertyMappingValue(new List<string>() {"Contact.State"}) }
     };
 
     public PropertyMappingService()
     {
-      _propertyMappings.Add(new PropertyMapping<ProductDtoViewModel, Product>(_productPropertyMapping));
-      _propertyMappings.Add(new PropertyMapping<UserDtoViewModel, User>(_userPropertyMapping));
+      _propertyMappings.Add(new PropertyMapping<ProductDto, Product>(_productPropertyMapping));
+      _propertyMappings.Add(new PropertyMapping<UserDto, User>(_userPropertyMapping));
     }
 
     public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()

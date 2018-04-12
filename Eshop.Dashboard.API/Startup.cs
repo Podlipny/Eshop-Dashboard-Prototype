@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoMapper;
 using Eshop.Dashboard.API.ViewModels;
 using Eshop.Dashboard.API.ViewModels.Users;
 using Eshop.Dashboard.Data;
@@ -58,9 +59,9 @@ namespace Eshop.Dashboard.API
         });
 
       services.AddMvc().AddJsonOptions(options =>
-        {
-          options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-        });
+      {
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+      });
 
       // Register the Swagger generator, defining one or more Swagger documents  
       services.AddSwaggerGen(c =>
@@ -141,15 +142,16 @@ namespace Eshop.Dashboard.API
       //TODO: move this into separate automapper config file
       AutoMapper.Mapper.Initialize(cfg =>
       {
+        cfg.CreateMap<Log, LogDto>();
         cfg.CreateMap<RegisterViewModel, User>();
-        cfg.CreateMap<User, UserDtoViewModel>()
+        cfg.CreateMap<User, UserDto>()
           .ForMember(dest => dest.Telephone, opt => opt.MapFrom(src => src.Contact.Telephone))
           .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Contact.Address1))
           .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Contact.Address2))
           .ForMember(dest => dest.Psc, opt => opt.MapFrom(src => src.Contact.Psc))
           .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Contact.City))
           .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Contact.State));
-        cfg.CreateMap<Product, ProductDtoViewModel>()
+        cfg.CreateMap<Product, ProductDto>()
           .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.Id))
           .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
           .ForMember(dest => dest.VendorId, opt => opt.MapFrom(src => src.Vendor.Id))

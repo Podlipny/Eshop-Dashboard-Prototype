@@ -34,16 +34,16 @@ namespace Eshop.Dashboard.API.Controllers
         return NotFound($"Product with id: {id} does not found!");
       }
 
-      var productToReturn = Mapper.Map<ProductDtoViewModel>(productEntity);
+      var productToReturn = Mapper.Map<ProductDto>(productEntity);
 
       return Ok(productToReturn);
     }
 
     [HttpGet(Name = "GetCatalogItems")]
-    public IActionResult Get(Guid categoryId, CollectionResourceParameters productResourceParameters)
+    public IActionResult Get(Guid categoryId, SortableCollectionResourceParameters productResourceParameters)
     {
      var productsFromRepo = _productsRepository.GetProducts(productResourceParameters, categoryId);
-      var products = Mapper.Map<IEnumerable<ProductDtoViewModel>>(productsFromRepo);
+      var products = Mapper.Map<IEnumerable<ProductDto>>(productsFromRepo);
 
       var previousPageLink = productsFromRepo.HasPrevious ? CreateProductsResourceUri(productResourceParameters, ResourceUriType.PreviousPage) : null;
 
@@ -62,12 +62,12 @@ namespace Eshop.Dashboard.API.Controllers
       return Ok(products);
     }
 
-    private string CreateProductsResourceUri(CollectionResourceParameters productResourceParameters, ResourceUriType type)
+    private string CreateProductsResourceUri(SortableCollectionResourceParameters productResourceParameters, ResourceUriType type)
     {
       switch (type)
       {
         case ResourceUriType.PreviousPage:
-          return _urlHelper.Link("GetCatalogItem",
+          return _urlHelper.Link("GetCatalogItems",
             new
             {
               fields = productResourceParameters.Fields,
@@ -77,7 +77,7 @@ namespace Eshop.Dashboard.API.Controllers
               pageSize = productResourceParameters.PageSize
             });
         case ResourceUriType.NextPage:
-          return _urlHelper.Link("GetCatalogItem",
+          return _urlHelper.Link("GetCatalogItems",
             new
             {
               fields = productResourceParameters.Fields,
@@ -88,7 +88,7 @@ namespace Eshop.Dashboard.API.Controllers
             });
         case ResourceUriType.Current:
         default:
-          return _urlHelper.Link("GetCatalogItem",
+          return _urlHelper.Link("GetCatalogItems",
             new
             {
               fields = productResourceParameters.Fields,
