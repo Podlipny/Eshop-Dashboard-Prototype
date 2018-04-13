@@ -6,7 +6,7 @@ import { IProduct } from '../../model/IProduct';
 import { environment } from '../../../environments/environment';
 import { HttpHelper } from '../../helpers/HttpHelper';
 
-import { SortOrderEnum } from '../../Enums/SortOrderEnum';
+import { SortOrderEnum } from '../../enums/SortOrderEnum';
 
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';

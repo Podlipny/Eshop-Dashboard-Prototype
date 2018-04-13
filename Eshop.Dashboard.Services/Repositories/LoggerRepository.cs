@@ -20,11 +20,11 @@ namespace Eshop.Dashboard.Services.Repositories
     {
     }
 
-    public void Log(LogEventsEnum eventType, string message)
+    public void Log(LogLevelEnum levelType, string message)
     {
       var logEntity = new Log();
       logEntity.Id = Guid.NewGuid();
-      logEntity.EvenType = eventType.GetStringValue();
+      logEntity.EvenType = levelType.GetStringValue();
       logEntity.CreatedWhen = DateTime.Now;
       logEntity.Message = message;
 
@@ -38,7 +38,7 @@ namespace Eshop.Dashboard.Services.Repositories
       IQueryable<Log> collectionBeforePaging = _context.Logs.OrderByDescending(o => o.CreatedWhen);
 
       if(logLevel != null)
-        collectionBeforePaging = collectionBeforePaging.Where(x => x.EvenType == ((LogEventsEnum)Enum.ToObject(typeof(LogEventsEnum), logLevel)).GetStringValue());
+        collectionBeforePaging = collectionBeforePaging.Where(x => x.EvenType == ((LogLevelEnum)Enum.ToObject(typeof(LogLevelEnum), logLevel)).GetStringValue());
 
       if (!string.IsNullOrEmpty(logResourceParameters.SearchQuery))
       {

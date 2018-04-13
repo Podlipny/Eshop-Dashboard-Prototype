@@ -5,12 +5,12 @@ using AutoMapper;
 using Eshop.Dashboard.API.Enums;
 using Eshop.Dashboard.API.Helpers;
 using Eshop.Dashboard.API.ViewModels;
-using Eshop.Dashboard.Data.Entities;
 using Eshop.Dashboard.Services.Dto;
 using Eshop.Dashboard.Services.Enums;
 using Eshop.Dashboard.Services.Helpers;
 using Eshop.Dashboard.Services.Repositories;
 using Eshop.Dashboard.Services.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -40,6 +40,7 @@ namespace Eshop.Dashboard.API.Controllers
     /// </summary>
     /// <param name="requestModel"></param>
     /// <returns></returns>
+    [Authorize]
     [HttpGet(Name = "GetLogs")]
     public IActionResult Get(LogViewModel requestModel)
     {
@@ -80,13 +81,13 @@ namespace Eshop.Dashboard.API.Controllers
       {
         try
         {
-          if (model.EvenTypeId == (int)LogEventsEnum.Trace)
+          if (model.LogLevelId == (int)LogLevelEnum.Trace)
             _loggerService.LogTrace(model.Message);
-          else if (model.EvenTypeId == (int)LogEventsEnum.Debug)
+          else if (model.LogLevelId == (int)LogLevelEnum.Debug)
             _loggerService.LogDebug(model.Message);
-          else if (model.EvenTypeId == (int)LogEventsEnum.Error)
+          else if (model.LogLevelId == (int)LogLevelEnum.Error)
             _loggerService.LogError(model.Message);
-          else if (model.EvenTypeId == (int) LogEventsEnum.Event)
+          else if (model.LogLevelId == (int) LogLevelEnum.Event)
           {
             if (User.Identity.IsAuthenticated)
             {
@@ -97,7 +98,7 @@ namespace Eshop.Dashboard.API.Controllers
             else
               _loggerService.LogEvent(model.Message);
           }
-          else if (model.EvenTypeId == (int)LogEventsEnum.Warning)
+          else if (model.LogLevelId == (int)LogLevelEnum.Warning)
             _loggerService.LogWarning(model.Message);
           else
             _loggerService.LogInfo(model.Message);

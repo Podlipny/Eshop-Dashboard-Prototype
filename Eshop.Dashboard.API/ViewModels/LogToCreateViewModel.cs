@@ -9,7 +9,7 @@ namespace Eshop.Dashboard.API.ViewModels
     /// Type of log level
     /// </summary>
     [Required]
-    public int EvenTypeId { get; set; }
+    public int LogLevelId { get; set; }
 
     /// <summary>
     /// Log message

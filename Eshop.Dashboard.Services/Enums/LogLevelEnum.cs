@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Eshop.Dashboard.Services.Enums
+﻿namespace Eshop.Dashboard.Services.Enums
 {
-    public enum LogEventsEnum
+    public enum LogLevelEnum
     {
       [StringValue("INFO")]
       Info,

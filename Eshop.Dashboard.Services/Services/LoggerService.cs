@@ -31,40 +31,40 @@ namespace Eshop.Dashboard.Services.Services
     public void LogInfo(string message)
     {
       if (_logToDatabase)
-        _loggerRepository.Log(LogEventsEnum.Info, message);
+        _loggerRepository.Log(LogLevelEnum.Info, message);
       _logger.LogInformation(message);
     }
 
     public void LogDebug(string message)
     {
       if (_logToDatabase)
-        _loggerRepository.Log(LogEventsEnum.Debug, message);
+        _loggerRepository.Log(LogLevelEnum.Debug, message);
       _logger.LogDebug(message);
     }
 
     public void LogTrace(string message)
     {
       if (_logToDatabase)
-        _loggerRepository.Log(LogEventsEnum.Trace, message);
+        _loggerRepository.Log(LogLevelEnum.Trace, message);
       _logger.LogTrace(message);
     }
 
     public void LogWarning(string message)
     {
       if (_logToDatabase)
-        _loggerRepository.Log(LogEventsEnum.Warning, message);
+        _loggerRepository.Log(LogLevelEnum.Warning, message);
       _logger.LogWarning(message);
     }
 
     public void LogError(string message)
     {
-      _loggerRepository.Log(LogEventsEnum.Error, message);
+      _loggerRepository.Log(LogLevelEnum.Error, message);
       _logger.LogError(message);
     }
 
     public void LogError(Exception exception)
     {
-      _loggerRepository.Log(LogEventsEnum.Debug, exception.Message);
+      _loggerRepository.Log(LogLevelEnum.Debug, exception.Message);
       _logger.LogError(500, exception, exception.Message);
     }
 
@@ -75,7 +75,7 @@ namespace Eshop.Dashboard.Services.Services
     public void LogEvent(string message)
     {
 
-      _loggerRepository.Log(LogEventsEnum.Event, message);
+      _loggerRepository.Log(LogLevelEnum.Event, message);
       _logger.LogInformation(message);
     }
 
@@ -87,7 +87,7 @@ namespace Eshop.Dashboard.Services.Services
     public void LogEvent(string message, Guid userId)
     {
 
-      _loggerRepository.Log(LogEventsEnum.Event, $"{message}: UserId: {userId}");
+      _loggerRepository.Log(LogLevelEnum.Event, $"{message}: UserId: {userId}");
       _logger.LogInformation($"{message}: UserId: {userId}");
     }
 
@@ -98,7 +98,7 @@ namespace Eshop.Dashboard.Services.Services
     /// <param name="user">User object</param>
     public void LogEvent(string message, User user)
     {
-      _loggerRepository.Log(LogEventsEnum.Event, $"{message}: UserId: {user.Id}");
+      _loggerRepository.Log(LogLevelEnum.Event, $"{message}: UserId: {user.Id}");
       _logger.LogInformation($"{message}: UserId: {user.Id}, UserEmail: {user.Email}");
     }
   }

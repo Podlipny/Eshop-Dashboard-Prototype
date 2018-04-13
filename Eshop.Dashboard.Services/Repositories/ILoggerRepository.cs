@@ -12,7 +12,7 @@ namespace Eshop.Dashboard.Services.Repositories
   /// </summary>
   public interface ILoggerRepository
   {
-    void Log(LogEventsEnum eventType, string message);
+    void Log(LogLevelEnum levelType, string message);
 
     PagedList<Log> Get(CollectionResourceParameters logResourceParameters, int? logLevel = null);
   }
