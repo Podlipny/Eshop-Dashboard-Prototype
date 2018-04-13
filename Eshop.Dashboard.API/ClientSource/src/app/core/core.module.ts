@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { UserService } from './user.service';
 import { ToastModule } from './toast/toast.module';
+import { LoggerService } from './logger.service';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ToastModule } from './toast/toast.module';
   ],
   declarations: [],
   providers: [
-    UserService
+    UserService,
+    LoggerService
   ]
 })
 export class CoreModule {

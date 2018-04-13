@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { IUser } from '../../model/IUser';
 import { UserService } from '../../core/user.service';
-import { AuthService } from '../auth.service';
 import { PasswordValidation } from '../../helpers/PasswordValidation';
 import { ToastService } from '../../core/toast/toast.service';
 
@@ -30,7 +29,6 @@ export class RegisterComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private authService: AuthService,
               private router: Router,
               private toastService: ToastService) {
     this.registerForm = fb.group({
@@ -50,7 +48,8 @@ export class RegisterComponent implements OnInit {
   }
 
   register(user: IUser) {
-    this.authService.register(user).subscribe(data => {
+    // TODO: push this to user service
+    this.userService.register(user).subscribe(data => {
       this.userService.user = data;
       this.router.navigate(['/']);
     }, error => {
