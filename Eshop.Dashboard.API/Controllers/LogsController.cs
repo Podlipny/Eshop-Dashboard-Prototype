@@ -13,7 +13,6 @@ using Eshop.Dashboard.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Eshop.Dashboard.API.Controllers
 {
   /// <summary>

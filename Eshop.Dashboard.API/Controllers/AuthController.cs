@@ -11,7 +11,6 @@ using Eshop.Dashboard.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 
 namespace Eshop.Dashboard.API.Controllers
 {
@@ -28,7 +27,7 @@ namespace Eshop.Dashboard.API.Controllers
     }
 
     [HttpPost(Name = "CreateToken")]
-    public IActionResult CreateToken([FromBody] LoginViewModel model)
+    public IActionResult CreateToken([FromBody]LoginViewModel model)
     {
       if (model == null)
         return BadRequest();
@@ -44,6 +43,9 @@ namespace Eshop.Dashboard.API.Controllers
           if (verified)
           {
             var userDto = Mapper.Map<UserDto>(userEntity);
+            
+            // if we should remember user, we set expiration to 3 months
+            var tokenExpiration = model.RememberMe ? DateTime.UtcNow.AddMonths(3) : DateTime.UtcNow.AddMinutes(120);
 
             // Create the token
             var claims = new[]
@@ -54,14 +56,11 @@ namespace Eshop.Dashboard.API.Controllers
               new Claim(ClaimTypes.NameIdentifier, userDto.Email, ClaimValueTypes.String),
               //new Claim(ClaimTypes.Role, userDto.Role, ClaimValueTypes.String),
               new Claim(ClaimTypes.Name, userDto.Username, ClaimValueTypes.String),
-              new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(30).Second.ToString(), ClaimValueTypes.DaytimeDuration)
+              new Claim(ClaimTypes.Expiration, tokenExpiration.Second.ToString(), ClaimValueTypes.DaytimeDuration)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            // if we should remember user, we set expiration to 3 months
-            var tokenExpiration = model.RememberMe ? DateTime.UtcNow.AddMonths(3) : DateTime.UtcNow.AddSeconds(20);//DateTime.UtcNow.AddMinutes(120);
 
             var token = new JwtSecurityToken(
               _configuration["Tokens:Issuer"],

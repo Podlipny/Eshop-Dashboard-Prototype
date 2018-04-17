@@ -23,19 +23,19 @@ export class ProductService {
               private http: HttpClient) { }
 
   addProduct(product: IProduct): Observable<IProduct> {
-    return this.http.post<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeadres() });
+    return this.http.post<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeaders() });
   }
 
   updateProduct(product: IProduct): Observable<IProduct> {
-    return this.http.put<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeadres() });
+    return this.http.put<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeaders() });
   }
 
   deleteProduct(id: string): Observable<{}> {
-    return this.http.delete(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeadres() });
+    return this.http.delete(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeaders() });
   }
 
   getProduct(id: string): Observable<IProduct> {
-    return this.http.get<IProduct>(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeadres() });
+    return this.http.get<IProduct>(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeaders() });
                     // .pipe(catchError((error: HttpErrorResponse) => {
                     //     console.error('', error);
                     //     return new ErrorObservable('Something bad happened; please try again later.');
@@ -54,7 +54,7 @@ export class ProductService {
     if (searchQuery) {
       query += '&searchQuery=' + searchQuery;
     }
-    return this.http.get<IProduct[]>(environment.apiUrl + query, { headers: HttpHelper.getHeadres(), observe: 'response' })
+    return this.http.get<IProduct[]>(environment.apiUrl + query, { headers: HttpHelper.getHeaders(), observe: 'response' })
                     .pipe(catchError((error: HttpErrorResponse) => {
                         console.error(error.message);
                         return new ErrorObservable(error);

@@ -1,4 +1,4 @@
-export declare enum LogLevelEnum {
+export enum LogLevelEnum {
   Info = 0,
   Debug = 1,
   Trace = 2,

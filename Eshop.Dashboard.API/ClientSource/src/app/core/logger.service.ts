@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { environment } from '../../environments/environment';
@@ -30,11 +30,8 @@ export class LoggerService {
       logLevelId: logLevelId,
       message: message
     };
-    this.http.post<ILogMessage>(environment.apiUrl + this.productsEndpoint + '/', _message, { headers: this.userService.getHttpHeaders() })
-             .pipe(catchError((error: HttpErrorResponse) => {
-                console.error(error.message);
-                return new ErrorObservable(error);
-              }));
+    this.http.post<ILogMessage>(environment.apiUrl + this.productsEndpoint, _message, { headers: HttpHelper.getHeaders() })
+             .subscribe({ error: e => console.error(e) });
   }
 
   logInfo(message: string) {
@@ -73,7 +70,7 @@ export class LoggerService {
     if (searchQuery) {
       query += '&searchQuery=' + searchQuery;
     }
-    return this.http.get<ILogEntity[]>(environment.apiUrl + query, { headers: HttpHelper.getHeadres(), observe: 'response' })
+    return this.http.get<ILogEntity[]>(environment.apiUrl + query, { headers: HttpHelper.getHeaders(this.userService.token), observe: 'response' })
                     .pipe(catchError((error: HttpErrorResponse) => {
                         this.logError(error.message);
                         console.error(error.message);

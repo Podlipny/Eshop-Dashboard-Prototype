@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router';
 
 import { IUser } from '../../model/IUser';
-import { UserService } from '../../core/user.service';
 import { PasswordValidation } from '../../helpers/PasswordValidation';
 import { ToastService } from '../../core/toast/toast.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
   matchPasswordAlert: string = 'Passwords must match!';
 
   constructor(private fb: FormBuilder,
-              private userService: UserService,
+              private authService: AuthService,
               private router: Router,
               private toastService: ToastService) {
     this.registerForm = fb.group({
@@ -48,13 +48,11 @@ export class RegisterComponent implements OnInit {
   }
 
   register(user: IUser) {
-    // TODO: push this to user service
-    this.userService.register(user).subscribe(data => {
-      this.userService.user = data;
-      this.router.navigate(['/']);
-    }, error => {
-      this.registrationError = error.error;
-      console.log('Unexpected error happend!');
+    // TODO: implement LoaderService to fire global loaders
+    this.authService.register(user).subscribe(data => {
+        this.router.navigate(['/']);
+      }, error => {
+
     });
   }
 

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Eshop.Dashboard.Services.Enums;
 
 namespace Eshop.Dashboard.API.ViewModels
 {
