@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user.service';
 import { ToastModule } from './toast/toast.module';
 import { LoggerService } from './logger.service';
+import { ErrorHandleService } from './error-handle.service';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { LoggerService } from './logger.service';
   declarations: [],
   providers: [
     UserService,
-    LoggerService
+    LoggerService,
+    ErrorHandleService
   ]
 })
 export class CoreModule {
