@@ -10,6 +10,7 @@ import { SortOrderEnum } from '../../enums/SortOrderEnum';
 
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
+import 'rxjs/add/operator/catch';
 
 import { ToastService } from '../../core/toast/toast.service';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -25,24 +26,29 @@ export class ProductService {
               private http: HttpClient) { }
 
   addProduct(product: IProduct): Observable<IProduct> {
-    return this.http.post<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeaders() });
+    return this.http.post<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeaders() })
+                    .pipe(catchError((error: HttpErrorResponse) => {
+                      return this.errorHandler.handle(error);
+                    }));
   }
 
   updateProduct(product: IProduct): Observable<IProduct> {
-    return this.http.put<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeaders() });
+    return this.http.put<IProduct>(environment.apiUrl + this.productsEndpoint + '/', product, { headers: HttpHelper.getHeaders() })
+                    .pipe(catchError((error: HttpErrorResponse) => {
+                      return this.errorHandler.handle(error);
+                    }));
   }
 
   deleteProduct(id: string): Observable<{}> {
-    return this.http.delete(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeaders() });
+    return this.http.delete(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeaders() })
+                    .pipe(catchError((error: HttpErrorResponse) => {
+                      return this.errorHandler.handle(error);
+                    }));
   }
 
   getProduct(id: string): Observable<IProduct> {
     return this.http.get<IProduct>(environment.apiUrl + this.productsEndpoint + '/' + id, { headers: HttpHelper.getHeaders() })
-                    .pipe(catchError((error: HttpErrorResponse) => {
-                        this.errorHandler.handle(error);
-                        return new ErrorObservable(error);
-                      })
-                    );
+                    .catch(this.errorHandler.handle);
   }
 
   loalProducts(orderBy: string = null, pageNumber: number = 2, pageSize: number = 10, searchQuery: string = null, sortOrder: string = 'dest'): Observable<HttpResponse<IProduct[]>> {
@@ -57,9 +63,6 @@ export class ProductService {
       query += '&searchQuery=' + searchQuery;
     }
     return this.http.get<IProduct[]>(environment.apiUrl + query, { headers: HttpHelper.getHeaders(), observe: 'response' })
-                    .pipe(catchError((error: HttpErrorResponse) => {
-                        this.errorHandler.handle(error);
-                        return new ErrorObservable(error);
-                      }));
+                    .catch(this.errorHandler.handle);
   }
 }

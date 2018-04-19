@@ -29,6 +29,12 @@ export let dashboardMenuItems: Array<MenuItem> = [
                 icon: null,
                 route: 'products/categories',
                 submenu: null
+            },
+            {
+                label: 'Vendors',
+                icon: null,
+                route: 'products/vendors',
+                submenu: null
             }
         ],
     },

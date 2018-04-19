@@ -57,10 +57,26 @@ namespace Eshop.Dashboard.Services.Services
       { nameof(UserDto.State), new PropertyMappingValue(new List<string>() {"Contact.State"}) }
     };
 
+    private readonly Dictionary<string, PropertyMappingValue> _vendorPropertyMapping = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
+    {
+      { nameof(VendorDto.Id), new PropertyMappingValue(new List<string>() { nameof(VendorDto.Id) }) },
+      { nameof(VendorDto.Name), new PropertyMappingValue(new List<string>() { nameof(VendorDto.Name) }) },
+      { nameof(VendorDto.Ico), new PropertyMappingValue(new List<string>() { nameof(VendorDto.Ico) }) },
+      { nameof(VendorDto.Dic), new PropertyMappingValue(new List<string>() { nameof(VendorDto.Dic) }) },
+      { nameof(VendorDto.Director), new PropertyMappingValue(new List<string>() { nameof(VendorDto.Director) }) },
+      { nameof(ContactDto.Telephone), new PropertyMappingValue(new List<string>() {"Contact.Telephone"})},
+      { nameof(ContactDto.Address1), new PropertyMappingValue(new List<string>() {"Contact.Address1"}) },
+      { nameof(ContactDto.Address2), new PropertyMappingValue(new List<string>() {"Contact.Address2"}) },
+      { nameof(ContactDto.Psc), new PropertyMappingValue(new List<string>() {"Contact.Psc"}) },
+      { nameof(ContactDto.City), new PropertyMappingValue(new List<string>() {"Contact.City"}) },
+      { nameof(ContactDto.State), new PropertyMappingValue(new List<string>() {"Contact.State"}) }
+    };
+
     public PropertyMappingService()
     {
       _propertyMappings.Add(new PropertyMapping<ProductDto, Product>(_productPropertyMapping));
       _propertyMappings.Add(new PropertyMapping<UserDto, User>(_userPropertyMapping));
+      _propertyMappings.Add(new PropertyMapping<VendorDto, Vendor>(_vendorPropertyMapping));
     }
 
     public Dictionary<string, PropertyMappingValue> GetPropertyMapping<TSource, TDestination>()

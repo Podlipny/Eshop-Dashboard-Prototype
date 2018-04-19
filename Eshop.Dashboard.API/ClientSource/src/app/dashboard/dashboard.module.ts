@@ -15,7 +15,7 @@ import { MenuComponent } from './menu/menu.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import { MenuService } from './services/menu.service';
 import { MenuExpanderComponent } from './menu-expander/menu-expander.component';
-
+import { VendorsService } from './services/vendors.service';
 
 @NgModule({
   imports: [
@@ -29,8 +29,10 @@ import { MenuExpanderComponent } from './menu-expander/menu-expander.component';
     BoardViewComponent,
     MenuComponent,
     MenuItemComponent,
-    MenuExpanderComponent,
+    MenuExpanderComponent
   ],
-  providers: [ ProductService, MenuService ]
+  providers: [ ProductService,
+               MenuService, 
+               VendorsService ]
 })
 export class DashboardModule { }

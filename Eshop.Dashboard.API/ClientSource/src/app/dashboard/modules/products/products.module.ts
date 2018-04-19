@@ -5,9 +5,10 @@ import { SharedModule } from '../../../shared/shared.module';
 import { CovalentModule } from '../../../shared/covalent.module';
 import { MaterialModule } from '../../../shared/material.module';
 
-import { ProductsComponent } from './products/products.component';
+import { ProductsComponent } from './products.component';
 import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { VendorsListComponent } from './vendors-list/vendors-list.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
   declarations: [
     ProductsComponent,
     ProductsListComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    VendorsListComponent
   ]
 })
 export class ProductsModule { }

@@ -1,8 +1,7 @@
-
 <mat-card>
   <app-datatable
     #dataTable
-    [label]="'Products'"
+    [label]="'Vendors'"
     [loading]="loading"
     [data]="filteredData"
     [columns]="columns"
@@ -12,13 +11,12 @@
     [multiple]="true"
     [sortable]="true"
     [actionsVisible]="true"
-    (loadEvent)="load($event)"
-    (rowClick)="showAlert($event)">  
+    (loadEvent)="load($event)">  
     <ng-template let-row>
-      <button mat-icon-button (click)="showAlert(row.name)" >
+      <button mat-icon-button>
         <mat-icon class="size-18 tc-grey-600" aria-label="Edit product">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="showAlert(row.name)" >
+      <button mat-icon-button (click)="deleteVendor(row.id)">
         <mat-icon class="size-18 tc-red-400" aria-label="Delete product">delete</mat-icon>
       </button>
     </ng-template>

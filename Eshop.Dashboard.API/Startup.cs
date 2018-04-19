@@ -92,6 +92,7 @@ namespace Eshop.Dashboard.API
 
       services.AddScoped<IUsersRepository, UsersRepository>();
       services.AddScoped<IProductsRepository, ProductsRepository>();
+      services.AddScoped<IVendorRepository, VendorRepository>();
       services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
       services.AddMemoryCache();
@@ -160,6 +161,7 @@ namespace Eshop.Dashboard.API
           .ForMember(dest => dest.VendorId, opt => opt.MapFrom(src => src.Vendor.Id))
           .ForMember(dest => dest.VendorName, opt => opt.MapFrom(src => src.Vendor.Name))
           .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.ProductState.Name));
+        cfg.CreateMap<Vendor, VendorDto>();
         cfg.CreateMap<Category, CategoryDto>();
         cfg.CreateMap<Category, CategoryToCreateViewModel>();
 

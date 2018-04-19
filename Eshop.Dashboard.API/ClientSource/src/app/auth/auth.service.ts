@@ -17,11 +17,9 @@ export class AuthService {
 
   login(credentials: ICredentials): Observable<any> {
     return this.http.post<ICredentials>(environment.apiUrl + 'auth', credentials, { headers: HttpHelper.getHeaders() });
-    // TODO: pipe error handling and implement ErrorHandleService
   }
 
   register(user: IUser): Observable<any> {
     return this.http.post<IUser>(environment.apiUrl + 'users', user, { headers: HttpHelper.getHeaders() });
-    // TODO: pipe error handling and implement ErrorHandleService
   }
 }

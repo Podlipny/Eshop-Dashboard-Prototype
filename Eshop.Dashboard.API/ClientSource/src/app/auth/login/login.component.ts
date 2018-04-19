@@ -34,9 +34,6 @@ export class LoginComponent implements OnInit {
               private userService: UserService, 
               private toastService: ToastService, 
               private router: Router) {
-      // if (this.userService.isAuthorized()) {
-      //   this.router.navigate(['/']);
-      // }
 
       this.loginForm = new FormGroup({
       username: this.usernameFormControl,

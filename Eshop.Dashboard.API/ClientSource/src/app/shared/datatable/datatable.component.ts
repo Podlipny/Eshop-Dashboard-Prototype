@@ -36,6 +36,8 @@ export interface IDataTableColumn extends ITdDataTableColumn {
 export class DatatableComponent implements OnInit, AfterViewInit {
   @ContentChild(TemplateRef) templateRef: TemplateRef<any>;
 
+  @Input() label: string = '';
+
   @Input() loading: boolean = false;
   @Input() data: any[] = [];
   @Input() totalCount: number = 0;
@@ -94,6 +96,31 @@ export class DatatableComponent implements OnInit, AfterViewInit {
 
   click(event: any): void {
     this.rowClickEvent.emit(event);
+  }
+
+  formatColumn(column: IDataTableColumn, row: any): any {
+    let value;
+    if (column.nested === true) {
+      value = this.nestedAccess(column.name, row);
+    } else {
+      value = row[column.name];
+    }
+    return column.format ? column.format(value) : value;
+  }
+
+  /**
+   * Helper function to access nested objects by its path
+   * 
+   * @param {string} path String representaion of object path
+   * @param {*} row Row item
+   * @returns {*} Row value
+   * @memberof DatatableComponent
+   */
+  nestedAccess(path: string, row: any): any {
+    // splits path and load object by object
+    return path.split('.').reduce(function(prev, curr) {
+      return prev ? prev[curr] : '';
+    }, row || self);
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
